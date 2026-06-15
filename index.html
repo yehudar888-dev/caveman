@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CaveMan</title>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.0.0/dist/tabler-icons.min.css">
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { background: #000; }
@@ -18,7 +17,7 @@ body { background: #000; }
 }
 #header {
   position: absolute;
-  top: 24px;
+  top: 28px;
   left: 0; right: 0;
   text-align: center;
   z-index: 5;
@@ -41,8 +40,8 @@ body { background: #000; }
 .bubble {
   position: absolute;
   border-radius: 50%;
-  border: 1px solid rgba(255,255,255,0.2);
-  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.18);
+  background: rgba(255,255,255,0.04);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -52,19 +51,20 @@ body { background: #000; }
   transition: border-color 0.2s, background 0.2s;
 }
 .bubble:hover {
-  border-color: rgba(255,255,255,0.6);
-  background: rgba(255,255,255,0.12);
+  border-color: rgba(255,255,255,0.55);
+  background: rgba(255,255,255,0.11);
 }
 .bubble span {
-  color: rgba(255,255,255,0.8);
-  font-size: 13px;
+  color: rgba(255,255,255,0.75);
+  font-size: 12px;
   font-weight: 400;
   letter-spacing: 0.03em;
   pointer-events: none;
+  padding: 6px;
 }
 @keyframes float {
   0%   { transform: translateY(0px); }
-  50%  { transform: translateY(-12px); }
+  50%  { transform: translateY(-10px); }
   100% { transform: translateY(0px); }
 }
 #overlay {
@@ -77,36 +77,38 @@ body { background: #000; }
   align-items: center;
   justify-content: center;
   padding: 32px 28px;
+  overflow-y: auto;
 }
 #overlay.on { display: flex; }
 #back {
   position: absolute;
   top: 18px; left: 18px;
   background: none; border: none;
-  color: rgba(255,255,255,0.35);
+  color: rgba(255,255,255,0.3);
   font-size: 13px; letter-spacing: 0.08em;
   cursor: pointer; font-family: inherit;
 }
-#back:hover { color: rgba(255,255,255,0.8); }
-#dots { display: flex; gap: 7px; margin-bottom: 24px; }
-.dot { width: 5px; height: 5px; border-radius: 50%; background: rgba(255,255,255,0.18); }
-.dot.on { background: rgba(255,255,255,0.75); }
-#otag { color: rgba(255,255,255,0.3); font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 8px; }
-#otitle { color: #fff; font-size: 22px; font-weight: 500; text-align: center; margin-bottom: 10px; }
-#obody { color: rgba(255,255,255,0.55); font-size: 14px; line-height: 1.7; text-align: center; max-width: 380px; margin-bottom: 28px; }
+#back:hover { color: rgba(255,255,255,0.75); }
+#dots { display: flex; gap: 7px; margin-bottom: 28px; }
+.dot { width: 5px; height: 5px; border-radius: 50%; background: rgba(255,255,255,0.15); }
+.dot.on { background: rgba(255,255,255,0.7); }
+#otag { color: rgba(255,255,255,0.28); font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; margin-bottom: 10px; }
+#otitle { color: #fff; font-size: 22px; font-weight: 600; text-align: center; margin-bottom: 12px; line-height: 1.3; }
+#obody { color: rgba(255,255,255,0.5); font-size: 14px; line-height: 1.75; text-align: center; max-width: 360px; margin-bottom: 32px; }
 #choices { display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 380px; }
 .cbtn {
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.13);
   border-radius: 100px;
-  color: #fff;
+  color: rgba(255,255,255,0.85);
   font-size: 13px;
   font-family: inherit;
   padding: 13px 22px;
   cursor: pointer;
   transition: background 0.15s, border-color 0.15s;
+  text-align: left;
 }
-.cbtn:hover { background: rgba(255,255,255,0.13); border-color: rgba(255,255,255,0.45); }
+.cbtn:hover { background: rgba(255,255,255,0.11); border-color: rgba(255,255,255,0.4); }
 #final {
   display: none;
   position: fixed;
@@ -120,30 +122,31 @@ body { background: #000; }
   text-align: center;
 }
 #final.on { display: flex; }
-#ftitle { color: #fff; font-size: 22px; font-weight: 500; margin-bottom: 10px; }
-#fbody { color: rgba(255,255,255,0.55); font-size: 14px; line-height: 1.7; max-width: 360px; margin-bottom: 24px; }
+#ftitle { color: #fff; font-size: 22px; font-weight: 600; margin-bottom: 12px; }
+#fbody { color: rgba(255,255,255,0.5); font-size: 14px; line-height: 1.75; max-width: 360px; margin-bottom: 28px; }
 #ftip {
-  background: rgba(255,255,255,0.05);
+  background: rgba(255,255,255,0.04);
   border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 14px;
-  padding: 16px 22px;
-  color: rgba(255,255,255,0.65);
+  border-radius: 16px;
+  padding: 18px 24px;
+  color: rgba(255,255,255,0.6);
   font-size: 13px;
-  line-height: 1.65;
+  line-height: 1.7;
   max-width: 360px;
-  margin-bottom: 28px;
+  margin-bottom: 32px;
+  text-align: left;
 }
 #rbtn {
   background: none;
-  border: 1px solid rgba(255,255,255,0.2);
+  border: 1px solid rgba(255,255,255,0.18);
   border-radius: 100px;
-  color: rgba(255,255,255,0.4);
+  color: rgba(255,255,255,0.35);
   font-size: 12px; letter-spacing: 0.1em;
   font-family: inherit;
   padding: 9px 26px;
   cursor: pointer;
 }
-#rbtn:hover { border-color: rgba(255,255,255,0.5); color: rgba(255,255,255,0.8); }
+#rbtn:hover { border-color: rgba(255,255,255,0.45); color: rgba(255,255,255,0.75); }
 </style>
 </head>
 <body>
@@ -182,72 +185,1123 @@ const feelings = [
   { label: "stress",       size: 86 },
   { label: "numbness",     size: 72 },
   { label: "shame",        size: 78 },
+  { label: "grief",        size: 90 },
+  { label: "burnout",      size: 94 },
+  { label: "fear",         size: 82 },
+  { label: "guilt",        size: 74 },
+  { label: "frustration",  size: 86 },
+  { label: "hopelessness", size: 82 },
+  { label: "heartbreak",   size: 88 },
+  { label: "exhaustion",   size: 92 },
+  { label: "rejection",    size: 78 },
 ];
 
+// Each step node: { titles[], bodies[], choiceSets[][] }
+// steps[1] is an ARRAY — index matches choice position so wording can vary freely
+// Final node: { final: true, titles[], bodies[], tips[] }
+
+function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+
 const flows = {
-  anger: {
-    steps: [
-      { title: "yo, what actually happened?", body: "anger doesn't just show up. something got to you. let's find it.", choices: ["someone let me down","i feel disrespected","things just aren't going my way","honestly no idea"] },
-      { "someone let me down": { title: "that stings bro", body: "when someone you counted on drops the ball, it cuts deep. especially when you'd never do that to them.", choices: ["i expected way more from them","it keeps happening","i feel dumb for trusting them"] }, "i feel disrespected": { title: "nah that's valid", body: "feeling dismissed is real. your anger is just your brain going 'nah bro, i matter'.", choices: ["they acted like i don't exist","nobody actually listens to me","i keep getting talked over"] }, "things just aren't going my way": { title: "everything's fighting you", body: "some days life just resists. every little thing goes wrong and it all stacks up fast.", choices: ["i'm tired of fighting for it","i keep trying and nothing works","it's just one thing after another"] }, "honestly no idea": { title: "that's actually super common", body: "sometimes the anger's just sitting there with no clear target. that's usually stress that's been building up with nowhere to go.", choices: ["i've been stressed for a while","i feel like i'm about to snap","everything's been annoying me lately"] } },
-      { final: true, title: "got it.", body: "your anger makes sense bro. it's just telling you something matters to you — your trust, your respect, your limits.", tip: "say it out loud: 'i'm angry because ___'. just naming it takes like half the heat away. seriously try it." }
-    ]
-  },
-  anxiety: {
-    steps: [
-      { title: "where's your head at rn?", body: "anxiety's everywhere at once. let's zoom in a bit.", choices: ["worried about the future","social stuff","something specific coming up","just a constant low-key dread"] },
-      { "worried about the future": { title: "the what-ifs won't shut up", body: "your brain's running worst-case scenarios on loop. it thinks it's helping. it's really not.", choices: ["i can't stop imagining things going wrong","i feel like nothing's in my control","i'm scared of failing"] }, "social stuff": { title: "the people stuff is exhausting", body: "social anxiety is lowkey brutal. always in your head about how you're coming across to everyone.", choices: ["i overthink everything i say","i hate being judged","i avoid stuff just to not feel it"] }, "something specific coming up": { title: "that one thing looming", body: "when there's something concrete coming up, anxiety locks in on it. makes it feel way bigger than it is.", choices: ["i can't stop thinking about it","i keep putting off dealing with it","my body's already reacting"] }, "just a constant low-key dread": { title: "background anxiety is real", body: "that low hum that never fully goes away. no obvious reason, just always there.", choices: ["it's been like this for months","i wake up already tense","i forget what actually chill feels like"] } },
-      { final: true, title: "anxiety noted bro.", body: "you're not broken. your nervous system's just running hot right now. the world's probably asking a lot of you.", tip: "try 4-7-8 breathing: in for 4, hold for 7, out for 8. do it three times. it literally slows your heart rate down." }
-    ]
-  },
-  sadness: {
-    steps: [
-      { title: "what's weighing on you?", body: "sadness comes in different shapes. let's figure out yours.", choices: ["i lost something or someone","i feel like i'm falling behind","i don't feel connected to anyone","i just feel... low"] },
-      { "i lost something or someone": { title: "grief is heavy bro", body: "loss hits different for everyone. doesn't matter if others think it's a big deal — it is to you.", choices: ["someone i care about is gone","i lost the life i thought i'd have","a relationship ended"] }, "i feel like i'm falling behind": { title: "comparison is brutal", body: "looking around and feeling like everyone else has it figured out while you're still figuring it out. rough.", choices: ["my friends seem way further ahead","i'm not where i thought i'd be","i feel like i wasted time"] }, "i don't feel connected to anyone": { title: "lonely in a crowd", body: "you can have people around and still feel completely alone. that disconnect is real.", choices: ["i have people but feel distant from them","i don't have anyone close","i push people away"] }, "i just feel... low": { title: "the heaviness", body: "sometimes sadness doesn't even need a reason. it just lands on you. that's valid too.", choices: ["it's been going on a while","i have zero motivation","i just feel flat"] } },
-      { final: true, title: "felt it, named it.", body: "sadness just means you care about stuff bro. honestly that's not a bad thing to have.", tip: "let yourself feel it for 10 minutes. then do one small physical thing — go outside, cold water on your face, make some food." }
-    ]
-  },
-  loneliness: {
-    steps: [
-      { title: "what kind of alone?", body: "loneliness shows up in a bunch of different ways.", choices: ["i literally have no one to talk to","people are around but nobody gets me","i want connection but i pull away","i lost my people somewhere along the way"] },
-      { "i literally have no one to talk to": { title: "real isolation bro", body: "not having your person — someone to just check in with — is genuinely hard. that's a real human need.", choices: ["it's been like this for a while","i used to have people","things changed and i lost them"] }, "people are around but nobody gets me": { title: "invisible in the room", body: "surrounded but unseen. this kind of lonely honestly hits harder than being physically alone.", choices: ["i can't be myself around them","they never really ask about me","i'm always kind of performing"] }, "i want connection but i pull away": { title: "the push-pull", body: "wanting closeness but running from it. usually means something taught you it's safer to stay alone.", choices: ["i don't trust people easily","i push things away when they get close","being vulnerable freaks me out"] }, "i lost my people somewhere along the way": { title: "the drift", body: "friendships that just... faded. people who used to be everything and then weren't anymore.", choices: ["after school or a job changed","after a breakup or falling out","we all just got busy"] } },
-      { final: true, title: "loneliness named.", body: "most people feel this and never say it out loud. you just did bro.", tip: "reach out to one person this week. doesn't have to be deep — a meme, a 'hey', a check-in. small moves chip away at it." }
-    ]
-  },
-  overthinking: {
-    steps: [
-      { title: "what's the loop about?", body: "brain on repeat — what's it stuck on?", choices: ["a decision i can't make","something i said or did","what someone thinks of me","everything, all at once"] },
-      { "a decision i can't make": { title: "stuck at the fork", body: "too many variables, scared of picking wrong. so you pick nothing and the loop just keeps going.", choices: ["both options seem bad","i'm scared of picking wrong","it affects too many people"] }, "something i said or did": { title: "the replay machine", body: "that one thing you said three days ago. three years ago. your brain will not let it go.", choices: ["i think i hurt someone","i embarrassed myself","i should've handled it differently"] }, "what someone thinks of me": { title: "living in their head rent-free", body: "spending more time in someone else's imagined thoughts than in your actual own life.", choices: ["after an awkward interaction","i care way too much what they think","i'm just waiting for them to pull away"] }, "everything, all at once": { title: "40 tabs open", body: "not one thing — literally everything. your brain switched to chaos mode and won't come back.", choices: ["i can't focus on anything","it's been like this for days","i feel overwhelmed just existing"] } },
-      { final: true, title: "mind noted.", body: "overthinking is just anxiety hunting for certainty in an uncertain world. you genuinely can't think your way out of it bro.", tip: "set a 5 minute timer. write every looping thought down. once it's on paper your brain stops trying to hold it. then close the notebook." }
-    ]
-  },
-  emptiness: {
-    steps: [
-      { title: "what does it feel like?", body: "emptiness is one of the harder ones to put words to. let's try.", choices: ["nothing excites me anymore","i'm just going through the motions","i don't know who i am rn","i just feel hollow"] },
-      { "nothing excites me anymore": { title: "the flatline", body: "stuff that used to hit just... doesn't. music, food, people. all kind of grey.", choices: ["it came on gradually","it happened after something","i've kind of always felt this way"] }, "i'm just going through the motions": { title: "autopilot mode", body: "showing up, doing the things, but not really being there for any of it.", choices: ["everything feels pointless","my relationships feel surface-level","i can't remember the last time i felt present"] }, "i don't know who i am rn": { title: "identity drift", body: "a version of you that felt solid now feels unfamiliar. happens after big changes or long periods of stress.", choices: ["a lot in my life shifted","i've been so focused on others i lost myself","i don't even know what i actually want"] }, "i just feel hollow": { title: "the ache of nothing", body: "not sadness exactly. not anger. just... nothing. like a room with no furniture in it.", choices: ["it's been going on a while","i feel disconnected from my own body","nothing really feels like it matters"] } },
-      { final: true, title: "emptiness acknowledged.", body: "emptiness usually means your system's just running low bro. not broken — depleted. there's a difference.", tip: "pick one thing that used to mean something and spend 15 minutes with it today. not to feel amazing — just to feel something." }
-    ]
-  },
-  stress: {
-    steps: [
-      { title: "what's pressing on you?", body: "stress is pressure with nowhere to go. where's it coming from?", choices: ["work or school","money stuff","relationships","i'm just stretched too thin"] },
-      { "work or school": { title: "the grind is grinding back", body: "too much, too fast, expectations stacking up. it gets heavy.", choices: ["i can't keep up","i don't feel like i'm good enough","i'm burnt out"] }, "money stuff": { title: "financial stress is real stress", body: "money worries sit in the background of everything. hard to chill when you're always calculating.", choices: ["i'm behind on things","i feel trapped","i'm scared about the future"] }, "relationships": { title: "people can be a lot", body: "stress from people you care about — or have to deal with — hits different than regular stress.", choices: ["there's conflict i can't resolve","i'm carrying someone else's weight","i feel under-appreciated"] }, "i'm just stretched too thin": { title: "capacity exceeded bro", body: "too many things pulling you in too many directions. no room left to just exist.", choices: ["i can't say no to things","my schedule is killing me","i can't remember the last time i actually rested"] } },
-      { final: true, title: "stress located.", body: "stress means you care and you're pushing hard. but your body keeps score bro.", tip: "do one thing tonight just for yourself. no productivity attached. half hour. the rest can genuinely wait." }
-    ]
-  },
-  numbness: {
-    steps: [
-      { title: "when did numb start?", body: "numbness is usually protection. something made it feel unsafe to feel too much.", choices: ["after something hard happened","it crept in slowly","i've always been a bit detached","when things got too overwhelming"] },
-      { "after something hard happened": { title: "shutdown mode", body: "your system took on too much and the circuit breaker tripped. numbness is just the safety protocol.", choices: ["loss or grief","a really rough period","something i don't wanna get into"] }, "it crept in slowly": { title: "slow fade", body: "day by day, a little less feeling. until you realised you weren't really reacting to things anymore.", choices: ["i've been numb for months","i stopped caring about things i used to","i lost my spark gradually"] }, "i've always been a bit detached": { title: "default setting", body: "some people just run cooler emotionally. sometimes it's how they're wired. sometimes it was learned early.", choices: ["emotions were never safe to show growing up","i just process differently","i'm not sure it's even a problem"] }, "when things got too overwhelming": { title: "emotional overload", body: "too much at once and the system just turned the volume down. it's a coping move.", choices: ["too many things hitting at once","i just couldn't handle it all","i went quiet inside"] } },
-      { final: true, title: "numbness understood.", body: "you're not broken bro. you're protected. the feeling's still in there — just behind a wall you built for a reason.", tip: "don't force it. just expose yourself to something that moves you — a song, a show, a memory. give the wall a small opening." }
-    ]
-  },
-  shame: {
-    steps: [
-      { title: "what's the shame about?", body: "shame says 'i am bad', not just 'i did something bad'. that difference actually matters a lot.", choices: ["something i did","how i look or who i am","things i've been through","feeling like less than everyone else"] },
-      { "something i did": { title: "guilt vs shame", body: "guilt says what you did was wrong. shame says YOU are wrong. those are really different things bro.", choices: ["i hurt someone","i failed at something","i made a choice i can't undo"] }, "how i look or who i am": { title: "self-image stuff", body: "shame about your body, your personality, your brain. somewhere along the way someone taught you that you weren't enough.", choices: ["i got criticised a lot growing up","i compare myself to everyone","i don't feel like i fit anywhere"] }, "things i've been through": { title: "survivor shame", body: "feeling ashamed of things that happened to you — things you didn't choose or control. bro, that's not yours to carry.", choices: ["something was done to me","my past feels like a burden","i'm scared of people knowing"] }, "feeling like less than everyone else": { title: "the not enough thing", body: "that constant baseline of feeling behind, lesser, not quite right. it's exhausting to live with.", choices: ["i never feel like i've done enough","i don't feel worthy of good things","i make myself small around others"] } },
-      { final: true, title: "shame faced.", body: "shame only survives in silence. you just said it out loud. that's not nothing bro.", tip: "shame needs secrecy to survive. tell one person one real thing about yourself this week. doesn't have to be the big thing. just something honest." }
-    ]
-  }
+
+  anger: { steps: [
+    {
+      titles: ["yo, what actually happened?", "what set it off?", "where's it coming from?"],
+      bodies: ["anger doesn't show up for no reason. something got to you.", "something pissed you off. totally fine. let's find it.", "there's a source. let's figure out what hit the nerve."],
+      choiceSets: [
+        ["someone let me down", "i feel disrespected", "things just aren't going my way", "i honestly don't know"],
+        ["someone dropped the ball on me", "i'm being dismissed or ignored", "everything keeps going wrong", "no idea — it's just there"],
+        ["a person failed me", "my worth got questioned", "life's just resisting everything", "can't put my finger on it"]
+      ]
+    },
+    [
+      {
+        titles: ["that stings bro", "betrayal hits different", "counted on them and they bailed"],
+        bodies: ["when someone you trusted drops the ball, it cuts deep. especially when you'd never do that to them.", "trusting someone and having them fail you is one of the sharpest kinds of hurt there is.", "you held up your end. they didn't. that's real and it's allowed to hurt."],
+        choiceSets: [
+          ["i expected way more from them", "it keeps happening", "i feel stupid for trusting them"],
+          ["they knew what was at stake", "this isn't even the first time", "i put myself out there and got burned"],
+          ["i held them to a standard they didn't meet", "the pattern keeps repeating", "i regret opening up to them"]
+        ]
+      },
+      {
+        titles: ["nah that's valid", "your dignity isn't up for debate", "being dismissed fires something real"],
+        bodies: ["feeling dismissed or talked over is real. your anger is just your brain going 'nah bro, i matter'.", "being ignored activates something primal. because it should. you do matter.", "disrespect hits a core nerve. the anger is just the alarm going off."],
+        choiceSets: [
+          ["they acted like i don't exist", "nobody actually listens to me", "i keep getting talked over"],
+          ["i'm being treated like i'm invisible", "my input gets ignored", "someone steamrolled me again"],
+          ["i'm not being taken seriously", "they talk at me not with me", "i got dismissed in front of others"]
+        ]
+      },
+      {
+        titles: ["everything's fighting you rn", "friction from all directions", "life's resisting hard"],
+        bodies: ["some days everything just stacks against you. it compounds fast.", "when nothing cooperates, frustration snowballs. makes complete sense.", "one thing after another is exhausting. your anger makes sense."],
+        choiceSets: [
+          ["i'm tired of fighting for it", "i keep trying and nothing works", "it's just one thing after another"],
+          ["effort isn't producing anything", "no matter what i do it's not enough", "it's been a domino effect of bad"],
+          ["i'm hitting walls everywhere", "the effort isn't being rewarded", "i'm running out of steam fighting this"]
+        ]
+      },
+      {
+        titles: ["anger without a clear target", "undirected anger is real too", "that's actually super common"],
+        bodies: ["sometimes the anger just sits there with no clear source. that's usually built-up stress with nowhere to go.", "undirected anger means your system is overloaded. it's coming out sideways looking for an exit.", "not knowing why you're angry doesn't make it less real. something's been building."],
+        choiceSets: [
+          ["i've been stressed for a while", "i feel like i'm about to snap", "everything's been annoying me"],
+          ["it's been building for weeks", "small things are setting me off disproportionately", "i just feel constantly on edge"],
+          ["there's a low simmer that won't quit", "i'm quicker to irritate than usual", "i don't know what i actually need right now"]
+        ]
+      }
+    ],
+    {
+      final: true,
+      titles: ["got it.", "anger acknowledged.", "makes complete sense."],
+      bodies: ["your anger is telling you something matters — your trust, your respect, your limits. that's useful information.", "anger's not the enemy. it's a signal. something that matters to you is being messed with.", "you're not overreacting. something real is being violated. the anger is just the alarm."],
+      tips: [
+        "say it out loud: 'i'm angry because ___'. just naming it takes half the heat away. seriously try it.",
+        "give yourself 20 minutes before responding to whatever this is. not to avoid it — just to not say something you'll regret.",
+        "do something physical right now. walk fast, push something heavy, blast music. your body needs to process this before your brain can.",
+        "write down the thing that happened in one sentence. just that. it externalises it and makes it easier to see clearly."
+      ]
+    }
+  ]},
+
+  anxiety: { steps: [
+    {
+      titles: ["where's your head at rn?", "what's the anxiety latched onto?", "what's got your brain running hot?"],
+      bodies: ["anxiety lives everywhere at once. let's zoom in on what's driving it.", "your brain's in overdrive. let's find the thing it's fixated on.", "something's got your nervous system spinning. let's narrow it down."],
+      choiceSets: [
+        ["worried about the future", "social stuff", "something specific coming up", "just a constant low hum"],
+        ["the future feels threatening", "people and social situations", "there's one thing looming", "general background dread i can't name"],
+        ["what-if spirals about what's ahead", "anxiety around other people", "a specific upcoming thing", "low-level unease that's always there"]
+      ]
+    },
+    [
+      {
+        titles: ["the what-ifs won't shut up", "your brain's catastrophising on loop", "worst-case-scenario mode"],
+        bodies: ["it's running simulations of everything that could go wrong. thinks it's protecting you. it's actually exhausting you.", "future-tripping is your brain being overprotective. annoying, but it means you care about what's ahead.", "the loop of 'what if it all goes wrong' is your nervous system trying to prepare for every outcome at once."],
+        choiceSets: [
+          ["i can't stop imagining things going wrong", "i feel out of control", "i'm scared of failing"],
+          ["my brain keeps catastrophising", "nothing feels certain or safe", "what if i can't handle what's coming"],
+          ["the worst-case scenario won't leave my head", "i need certainty and there isn't any", "i'm terrified of not being enough"]
+        ]
+      },
+      {
+        titles: ["the people stuff is a lot", "social anxiety is lowkey brutal", "always on in front of others"],
+        bodies: ["always in your head about how you're coming across. performing and self-monitoring at the same time is exhausting.", "social anxiety isn't shyness. it's running a constant background process judging every move you make.", "the energy it takes to exist around people when you're socially anxious is real. no wonder you're drained."],
+        choiceSets: [
+          ["i overthink everything i say", "i hate being judged", "i avoid stuff just to not feel it"],
+          ["i replay conversations after they happen", "i'm scared of saying the wrong thing", "being around people wears me out"],
+          ["i can't stop second-guessing how i came across", "the judgment feels constant", "i isolate to get relief from the pressure"]
+        ]
+      },
+      {
+        titles: ["that one thing looming", "anxiety locked in on something specific", "the thing that's taking up all the space"],
+        bodies: ["when there's something concrete coming, anxiety amplifies it. makes it feel way bigger than it probably is.", "your brain's treating this thing like a threat. it's in full preparation mode and it's uncomfortable.", "specific-target anxiety is almost worse than vague anxiety because you can't look away from it."],
+        choiceSets: [
+          ["i can't stop thinking about it", "i keep putting off dealing with it", "my body's already reacting"],
+          ["it's taking up all my mental space", "i know i should prepare but i can't start", "i'm feeling it physically already"],
+          ["the thing is all i can think about", "avoidance is making it bigger", "the dread is already physical"]
+        ]
+      },
+      {
+        titles: ["baseline dread is real", "that background hum that never quits", "chronic low-level anxiety"],
+        bodies: ["that low frequency that never fully goes away. no obvious reason, just always there underneath everything.", "chronic background anxiety is one of the most exhausting things to carry because there's no off switch.", "when the anxiety has no specific target it becomes the ambient condition. that's heavy."],
+        choiceSets: [
+          ["it's been like this for months", "i wake up already tense", "i forget what calm actually feels like"],
+          ["it's just my default state now", "i can't remember what relaxed feels like", "even good moments have an edge to them"],
+          ["it's been going on so long i accept it as normal", "the tension is there when i wake up", "i don't know what baseline peace feels like"]
+        ]
+      }
+    ],
+    {
+      final: true,
+      titles: ["anxiety noted bro.", "heard.", "nervous system clocked."],
+      bodies: ["you're not broken. your nervous system's just running hot. the world's asking a lot of you right now.", "anxiety is your brain being overprotective. annoying, but it means you care. let's just turn the volume down.", "this is your threat-detection system working overtime. it's not you — it's a misfiring alarm."],
+      tips: [
+        "try 4-7-8 breathing: in for 4, hold for 7, out for 8. do it three times. it literally slows your heart rate down.",
+        "name the worst-case scenario fully out loud. then ask: what's the realistic case? they're almost never the same thing.",
+        "your body and anxiety are in a feedback loop. even a 10 minute walk breaks it. start there.",
+        "write down everything you're anxious about in one go. your brain burns energy holding all of it. let the page hold it instead."
+      ]
+    }
+  ]},
+
+  sadness: { steps: [
+    {
+      titles: ["what's weighing on you?", "what's heavy right now?", "what's sitting on your chest?"],
+      bodies: ["sadness has different textures. let's figure out what kind you're carrying.", "something's got you down. no rush — let's find what it is.", "let's figure out what shape this sadness is in."],
+      choiceSets: [
+        ["i lost something or someone", "i feel like i'm falling behind", "i don't feel connected to anyone", "i just feel low"],
+        ["there's been a real loss", "everyone seems further ahead than me", "i feel disconnected from people", "no real reason, just sad"],
+        ["something's gone", "i'm behind where i thought i'd be", "i feel unseen or alone", "flat for no clear reason"]
+      ]
+    },
+    [
+      {
+        titles: ["grief is heavy bro", "loss hits different for everyone", "that's real and it matters"],
+        bodies: ["doesn't matter if others think it's a big deal. if it matters to you, it matters. full stop.", "losing something real — a person, a relationship, a version of your life — that takes actual time to process.", "loss is loss. the scale doesn't matter. if it was yours, the grief is valid."],
+        choiceSets: [
+          ["someone i care about is gone", "i lost the life i thought i'd have", "a relationship ended"],
+          ["someone's not in my life anymore", "things didn't go the way i planned", "something that mattered is over now"],
+          ["a person i love is gone", "a future i counted on fell through", "a connection ended that i valued"]
+        ]
+      },
+      {
+        titles: ["comparison is brutal", "the falling behind feeling", "everyone else looks further ahead"],
+        bodies: ["looking around and feeling like everyone else has it figured out while you're still trying. rough.", "social comparison is wired into us. but everyone's highlight reel makes the gap look bigger than it is.", "feeling behind is one of the more demoralising things to sit with. and it's almost always a distortion."],
+        choiceSets: [
+          ["my friends seem way further ahead", "i'm not where i thought i'd be", "i feel like i wasted time"],
+          ["people my age have more figured out", "i expected more from myself by now", "i feel behind on life"],
+          ["everyone around me seems to have it together", "the timeline i had for myself didn't happen", "i look back and feel like i lost years"]
+        ]
+      },
+      {
+        titles: ["lonely in a crowd", "that disconnected feeling", "surrounded but not seen"],
+        bodies: ["you can have people around and still feel completely alone. that disconnect is real and painful.", "not feeling truly known by the people around you is isolating in a way that's hard to explain to anyone.", "being physically near people while emotionally miles away is its own kind of loneliness."],
+        choiceSets: [
+          ["i have people but feel distant from them", "i don't really have anyone close", "i push people away"],
+          ["i can't open up to the people around me", "i feel like nobody really knows me", "i keep people at arm's length"],
+          ["the relationships i have feel surface level", "there's nobody i can be fully real with", "i protect myself by not letting people in"]
+        ]
+      },
+      {
+        titles: ["the heaviness", "sad without a clear reason", "flat for no reason you can name"],
+        bodies: ["sometimes sadness doesn't need a trigger. it just lands on you. that's valid too.", "that low, flat feeling with no obvious cause. your brain chemistry can just go there sometimes.", "not needing a reason for sadness doesn't make it less real. it just makes it harder to explain."],
+        choiceSets: [
+          ["it's been going on a while", "i have zero motivation", "i just feel flat"],
+          ["everything feels grey", "i can't get myself to do anything", "i don't feel much of anything"],
+          ["nothing's particularly wrong but nothing's right either", "i'm not motivated by anything", "i feel kind of hollow"]
+        ]
+      }
+    ],
+    {
+      final: true,
+      titles: ["felt it, named it.", "sadness acknowledged.", "you said it out loud."],
+      bodies: ["sadness means you care about things bro. that's actually not a bad thing to have going for you.", "you're allowed to be sad. it's not weakness — it's what happens when things matter to you.", "the feeling's real. don't try to logic it away. just let it move through."],
+      tips: [
+        "let yourself feel it for 10 minutes. then do one small physical thing — go outside, cold water on your face, make some food.",
+        "don't try to think your way out of it. sadness that gets resisted tends to get louder. let it move.",
+        "reach out to one person today. doesn't have to be about this. just a real connection. it helps more than you think.",
+        "write down three things that are still okay. not to dismiss the sadness — just to keep the view from narrowing too much."
+      ]
+    }
+  ]},
+
+  loneliness: { steps: [
+    {
+      titles: ["what kind of alone?", "tell me about the loneliness.", "where's the alone coming from?"],
+      bodies: ["loneliness isn't one thing. it shows up in different ways.", "not all loneliness looks the same. let's get specific.", "there's a specific flavour here. let's figure out which one."],
+      choiceSets: [
+        ["i literally have no one to talk to", "people are around but nobody gets me", "i want connection but i pull away", "i lost my people along the way"],
+        ["there's nobody in my corner", "i feel unseen by people around me", "closeness scares me even though i want it", "my friendships faded out"],
+        ["i'm genuinely isolated", "i feel invisible around others", "i push people away when they get close", "i used to have people and now i don't"]
+      ]
+    },
+    [
+      {
+        titles: ["real isolation bro", "that's genuinely hard", "no one to check in with"],
+        bodies: ["not having your person — someone to just check in with — is a real human need going unmet.", "being truly without people is one of the harder things to sit with. you're not built for it.", "the absence of even one person who gets you is felt in a specific physical way."],
+        choiceSets: [
+          ["it's been like this for a while", "i used to have people", "life changed and i lost them"],
+          ["i can't remember the last time someone checked on me", "i had people and then didn't", "circumstances shifted and i ended up alone"],
+          ["i don't have a go-to person", "people came and went and nobody stayed", "moving or changing situations cost me my people"]
+        ]
+      },
+      {
+        titles: ["invisible in the room", "surrounded but unseen", "the specific loneliness of being with people"],
+        bodies: ["being surrounded by people but still feeling completely alone is actually lonelier than being by yourself.", "that gap between surface interaction and actually being known — it's a specific ache.", "performing connection without actually feeling it is draining in a way that's hard to articulate."],
+        choiceSets: [
+          ["i can't be myself around them", "they never really ask about me", "i'm always performing"],
+          ["i keep things surface-level with everyone", "i don't feel like they actually see me", "i'm always the one asking about others"],
+          ["there's nobody i can just be real with", "conversations stay shallow no matter what", "i leave social situations feeling more alone"]
+        ]
+      },
+      {
+        titles: ["the push-pull", "wanting it but running from it", "closeness feels dangerous"],
+        bodies: ["wanting connection but pulling away from it usually means something taught you it's safer to stay alone.", "that tension — craving closeness but backing away from it — is usually old protection still running.", "the part of you that wants people and the part that runs from them are both trying to keep you safe."],
+        choiceSets: [
+          ["i don't trust people easily", "i push things away when they get close", "being vulnerable freaks me out"],
+          ["every time someone gets close i find a way to exit", "i keep people at a safe distance", "i want connection but i'm scared of it"],
+          ["intimacy makes me want to disappear", "i self-sabotage relationships before they can hurt me", "i crave closeness and avoid it at the same time"]
+        ]
+      },
+      {
+        titles: ["the drift", "the gradual fade", "lost them slowly without a clear ending"],
+        bodies: ["friendships that just faded. people who used to be everything and then weren't anymore.", "losing your people slowly — not through drama but through drift — is a quiet kind of grief.", "no falling out, no big moment. just life moving people away from each other."],
+        choiceSets: [
+          ["after school or a job change", "after a breakup or falling out", "we all just got busy"],
+          ["life took us different directions", "things ended and friendships went with it", "everyone got busy and we stopped showing up"],
+          ["graduation or a move scattered everyone", "a relationship ending took people with it", "we all got adult responsibilities and lost each other"]
+        ]
+      }
+    ],
+    {
+      final: true,
+      titles: ["loneliness named.", "you said it out loud bro.", "that took something."],
+      bodies: ["most people feel this and never say it. you just did.", "loneliness is way more common than people let on. everyone's pretending they're fine and it keeps everyone more isolated.", "naming it is the first move. connection starts with saying 'i'm lonely' even just to yourself."],
+      tips: [
+        "reach out to one person this week. doesn't have to be deep — a meme, a 'hey', a check-in. small moves chip away at it.",
+        "find one repeated context where people gather — a class, a gym, a hobby. repeated low-stakes contact is how friendships actually form.",
+        "start with one honest conversation. just say something real to someone. it's surprising how often people meet you there.",
+        "loneliness shrinks when you get out of your head and into something. volunteer, join something, show up somewhere consistently."
+      ]
+    }
+  ]},
+
+  overthinking: { steps: [
+    {
+      titles: ["what's the loop about?", "brain running on repeat — what's it stuck on?", "what's it orbiting?"],
+      bodies: ["your head's going in circles. let's find the centre of it.", "the loop always has a core. let's figure out what yours is.", "something's got your brain spinning. let's find what it won't let go of."],
+      choiceSets: [
+        ["a decision i can't make", "something i said or did", "what someone thinks of me", "everything, all at once"],
+        ["i'm stuck on a choice", "i keep replaying something", "i'm in someone else's head too much", "my brain's just everywhere"],
+        ["paralysed between options", "a moment keeps repeating in my head", "obsessing over how i came across", "total mental chaos"]
+      ]
+    },
+    [
+      {
+        titles: ["stuck at the fork", "decision paralysis", "can't pick, can't move"],
+        bodies: ["too many variables, scared of picking wrong. so you pick nothing and the loop just keeps running.", "decision paralysis is your brain trying to achieve certainty in a situation that doesn't have any. it can't win.", "the longer you delay, the bigger the decision feels. it's a feedback loop that makes action harder."],
+        choiceSets: [
+          ["both options seem bad", "i'm scared of making the wrong call", "it affects too many people"],
+          ["i can't figure out the right move", "what if i regret it", "i don't want to let people down"],
+          ["every option has a downside i'm fixating on", "the fear of regret is paralyzing me", "the stakes feel too high to get it wrong"]
+        ]
+      },
+      {
+        titles: ["the replay machine", "your brain's on rerun", "that moment won't leave"],
+        bodies: ["that thing you said three days ago, three years ago. your brain just will not let it go.", "replaying the past to find what you could've done differently is your brain's least useful feature.", "the memory keeps coming back because something in you hasn't made peace with it yet."],
+        choiceSets: [
+          ["i think i hurt someone", "i embarrassed myself", "i should've handled it differently"],
+          ["i said something and can't stop thinking about it", "i did something i wish i could take back", "i keep rewriting how it should've gone"],
+          ["i keep going back to a specific moment", "something i did is haunting me", "i can't let go of how i acted"]
+        ]
+      },
+      {
+        titles: ["living in their head rent-free", "trapped in someone else's perspective", "their opinion is taking up too much space"],
+        bodies: ["spending more time in someone else's imagined thoughts than in your actual life.", "the version of you that exists in their head is a story you're writing. it's probably not accurate.", "caring about what someone thinks isn't the problem. obsessing over it is where it gets expensive."],
+        choiceSets: [
+          ["after an awkward interaction", "i care way too much what they think", "i'm waiting for them to pull away"],
+          ["something felt off between us", "their opinion matters more than it should", "i keep looking for signs they're done with me"],
+          ["a conversation went weird and i can't drop it", "i'm measuring my worth through their reaction", "i'm bracing for them to disappear"]
+        ]
+      },
+      {
+        titles: ["40 tabs open", "brain in full chaos mode", "everything at once"],
+        bodies: ["not one thing — literally everything. your brain switched to chaos mode and won't come back.", "when everything's looping at once, it's usually because the real problem feels too big to face directly.", "total mental saturation. your brain's trying to process everything simultaneously and grinding to a halt."],
+        choiceSets: [
+          ["i can't focus on anything", "it's been like this for days", "i feel overwhelmed just existing"],
+          ["my thoughts are jumping all over", "i haven't been able to quiet it", "even basic stuff feels like too much"],
+          ["i can't complete a single thought", "the mental noise is constant", "i'm exhausted from the inside out"]
+        ]
+      }
+    ],
+    {
+      final: true,
+      titles: ["mind noted.", "brain clocked.", "loop acknowledged."],
+      bodies: ["overthinking is anxiety hunting for certainty in an uncertain world. you can't think your way out of it bro.", "the loop doesn't stop when you find the answer. it stops when you accept there isn't one right now.", "your brain is doing this to protect you. it's just using a tool that doesn't fit the job."],
+      tips: [
+        "set a 5 minute timer. write every looping thought down. once it's on paper your brain stops trying to hold it. then close the notebook.",
+        "pick the smallest possible next action. not a decision, not a solution — just the tiniest move you can make. do that one.",
+        "ask yourself: will this matter in 3 years? if yes, it deserves real thought. if no, your brain is dramatising.",
+        "the antidote to overthinking is doing something with your hands. cook, build, draw, clean. get out of your head into your body."
+      ]
+    }
+  ]},
+
+  emptiness: { steps: [
+    {
+      titles: ["what does it feel like?", "describe the emptiness.", "what kind of nothing is it?"],
+      bodies: ["emptiness is one of the harder ones to put words to. let's try.", "this one's subtle. let's narrow down what's happening.", "it's a specific kind of feeling even when it feels like no feeling. let's get at it."],
+      choiceSets: [
+        ["nothing excites me anymore", "i'm just going through the motions", "i don't know who i am rn", "i just feel hollow"],
+        ["things i used to love don't hit", "i'm on autopilot", "i've lost my sense of self", "there's just nothing there"],
+        ["the spark is gone", "showing up but not being there", "i feel like a stranger to myself", "a hollow flatness i can't shake"]
+      ]
+    },
+    [
+      {
+        titles: ["the flatline", "the grey zone", "things stopped hitting"],
+        bodies: ["stuff that used to land just doesn't anymore. music, food, people. all kind of flat.", "when your reward system goes quiet, everything loses its colour. it's one of the more unsettling feelings.", "the things that used to matter have gone neutral. that's your brain telling you something needs to change."],
+        choiceSets: [
+          ["it came on gradually", "it happened after something", "i've kind of always felt this way"],
+          ["things slowly stopped mattering", "something happened and i went flat after", "i'm not sure i've ever had a lot of passion"],
+          ["the fade was so slow i almost didn't notice", "after a specific thing, colour left everything", "this might just be who i am"]
+        ]
+      },
+      {
+        titles: ["autopilot mode", "showing up without being there", "going through the motions"],
+        bodies: ["doing all the things but not really present for any of it. physically there, mentally nowhere.", "going through the motions is exhausting in a specific way — you're spending energy without getting any return.", "existing on autopilot feels safe but it's also a slow drain."],
+        choiceSets: [
+          ["everything feels pointless", "my relationships feel surface-level", "i can't remember the last time i felt present"],
+          ["i'm doing stuff but nothing feels meaningful", "i'm around people but not really connecting", "i'm just moving through the days"],
+          ["the actions are there but the feeling behind them isn't", "interactions feel like performances", "i've lost the thread of why i do what i do"]
+        ]
+      },
+      {
+        titles: ["identity drift", "lost the plot on yourself", "don't recognise who you are rn"],
+        bodies: ["a version of you that felt solid now feels unfamiliar. happens after big changes or long stress.", "when you've been surviving or performing for long enough, you can lose track of who you are underneath all that.", "identity can get eroded quietly. you don't notice until you look inward and find someone unfamiliar."],
+        choiceSets: [
+          ["a lot in my life shifted", "i've been so focused on others i lost myself", "i don't know what i actually want"],
+          ["things changed and i don't recognise myself", "i've been living for other people", "i genuinely can't tell you what i care about"],
+          ["i've changed a lot and don't know if i like it", "i gave so much to others i lost my own thread", "if you asked me what i want i'd have no answer"]
+        ]
+      },
+      {
+        titles: ["the ache of nothing", "hollow is its own kind of pain", "emptiness without a name"],
+        bodies: ["not sadness exactly. not anger. just nothing. like a room with no furniture.", "emptiness without a name is one of the lonelier feelings because it's hard to explain to anyone.", "the hollow isn't absence of feeling — it's a feeling of absence. that's different."],
+        choiceSets: [
+          ["it's been going on a while", "i feel disconnected from my own body", "nothing really feels like it matters"],
+          ["this has been my baseline for a while", "i feel like i'm watching myself from outside", "i've stopped caring about most things"],
+          ["it's been the default for longer than i'd like to admit", "dissociation feels normal now", "investment in things just dried up"]
+        ]
+      }
+    ],
+    {
+      final: true,
+      titles: ["emptiness acknowledged.", "noted bro.", "that's a real thing."],
+      bodies: ["emptiness usually means your system's running low. not broken — depleted. there's a difference.", "you're not hollow. you're running on fumes. the feeling is temporary even when it doesn't feel like it.", "emptiness is often the signal before a shift. something's running out — but that means something new can come in."],
+      tips: [
+        "pick one thing that used to mean something and spend 15 minutes with it today. not to feel amazing — just to feel something.",
+        "emptiness often lifts with novelty. go somewhere you've never been. do one thing you haven't done before.",
+        "do one genuinely kind thing for someone else today. sounds basic but it's the fastest route back to feeling something real.",
+        "talk to someone honestly. not small talk — one real thing. connection is usually what's missing under the emptiness."
+      ]
+    }
+  ]},
+
+  stress: { steps: [
+    {
+      titles: ["what's pressing on you?", "where's the pressure coming from?", "what's squeezing you rn?"],
+      bodies: ["stress is pressure with nowhere to go. let's find the source.", "something's squeezing you. let's figure out what it is.", "stress always has a source. let's find yours."],
+      choiceSets: [
+        ["work or school", "money stuff", "relationships", "i'm just stretched too thin"],
+        ["professional or academic pressure", "financial stress", "people in my life are stressing me", "i'm running on empty"],
+        ["the grind is killing me", "money's weighing on me", "someone in my life is a lot", "too many things pulling at me"]
+      ]
+    },
+    [
+      {
+        titles: ["the grind is grinding back", "output overload", "too much, too fast"],
+        bodies: ["too much, too fast, expectations stacking up. your capacity has a limit and it's being pushed.", "when demands keep coming and recovery time doesn't, stress compounds fast.", "work and school can take everything you have if you don't put a wall somewhere."],
+        choiceSets: [
+          ["i can't keep up", "i don't feel good enough", "i'm burnt out"],
+          ["the workload is too much", "i feel like i'm always falling short", "i've got nothing left to give"],
+          ["i'm drowning in what's expected of me", "the standard feels impossible", "i hit the wall a while ago"]
+        ]
+      },
+      {
+        titles: ["financial stress is real stress", "money pressure is constant", "it's in the background of everything"],
+        bodies: ["money worries sit underneath everything. hard to truly chill when you're always calculating.", "financial stress activates the same brain circuits as physical threat. it's genuinely exhausting to carry.", "when money is the problem, it's hard to focus on anything else. it colours every decision."],
+        choiceSets: [
+          ["i'm behind on things", "i feel trapped", "i'm scared about the future"],
+          ["i'm struggling to keep up financially", "i don't see a way out right now", "i'm anxious about what's coming"],
+          ["bills and obligations are piling up", "i feel stuck in a financial situation", "the future financially looks uncertain"]
+        ]
+      },
+      {
+        titles: ["people can be a lot", "relationship stress hits different", "the people in your life are heavy rn"],
+        bodies: ["stress from people you care about goes deeper than regular stress. it's personal.", "the people closest to you have the most ability to stress you out. that's just the deal with caring.", "when relationships are the source, there's no clean off switch. it follows you."],
+        choiceSets: [
+          ["there's conflict i can't resolve", "i'm carrying someone else's weight", "i feel under-appreciated"],
+          ["something's unresolved with someone", "i'm everyone's support and nobody supports me", "i give more than i get"],
+          ["a conflict keeps going unaddressed", "i'm the emotional backbone for people who don't reciprocate", "the effort isn't matched"]
+        ]
+      },
+      {
+        titles: ["capacity exceeded", "running on zero", "stretched so thin you're see-through"],
+        bodies: ["too many things pulling you in too many directions. no space left to just exist.", "when you're saying yes to everything, you end up present for nothing. you can't pour from an empty cup.", "being overcommitted feels responsible but it's actually unsustainable. something has to give."],
+        choiceSets: [
+          ["i can't say no to things", "my schedule is killing me", "i can't remember the last time i rested"],
+          ["i'm overcommitted and can't get out", "there's no breathing room in my days", "rest feels impossible"],
+          ["i've taken on more than any person should handle", "my calendar is suffocating me", "i don't even know what rest looks like anymore"]
+        ]
+      }
+    ],
+    {
+      final: true,
+      titles: ["stress located.", "got it bro.", "pressure acknowledged."],
+      bodies: ["stress means you care and you're pushing hard. but your body keeps score.", "you're carrying a lot. the question is what can you put down, even just for tonight.", "stress is the gap between demands and resources. either reduce demands or build resources. both are options."],
+      tips: [
+        "do one thing tonight just for yourself. no productivity attached. half hour. the rest can genuinely wait.",
+        "write down everything stressing you in one list. your brain burns energy holding all of that. let the page hold it instead.",
+        "identify one thing you're doing that you don't actually have to do. find a way to drop it. even temporarily.",
+        "the most productive thing you can do when maxed out is rest. seriously. recovery isn't optional."
+      ]
+    }
+  ]},
+
+  numbness: { steps: [
+    {
+      titles: ["when did numb start?", "how long has it been like this?", "what's the numbness protecting you from?"],
+      bodies: ["numbness is usually protection. something made it feel unsafe to feel too much.", "going numb isn't weakness — it's your system protecting itself. let's figure out from what.", "numb usually means something got too big to feel. let's find it."],
+      choiceSets: [
+        ["after something hard happened", "it crept in slowly", "i've always been a bit detached", "when things got too overwhelming"],
+        ["something triggered it", "it gradually happened over time", "i've never felt that connected to feelings", "it was too much so i shut down"],
+        ["a specific thing caused it", "it was a slow fade", "detachment has kind of always been my default", "i hit a limit and everything went quiet"]
+      ]
+    },
+    [
+      {
+        titles: ["shutdown mode", "the circuit breaker tripped", "your system protected itself"],
+        bodies: ["your system took on too much and shut down feeling as a protective measure. it's not permanent.", "emotional shutdown after hard things is automatic. your brain doing what it could to keep you going.", "the numbness came in when the pain was too much. it's been useful. but it might be outstaying its welcome."],
+        choiceSets: [
+          ["loss or grief", "a really rough period", "something i don't want to get into"],
+          ["someone or something i lost", "a stretch of time that broke me a little", "i'd rather not say what"],
+          ["bereavement or significant loss", "a period i barely survived", "something i'm not ready to name"]
+        ]
+      },
+      {
+        titles: ["slow fade", "gradual disconnection", "the drift into flat"],
+        bodies: ["day by day, a little less feeling. until you realised you weren't really reacting to things like you used to.", "the slow fade is hard to catch because you don't notice until you look back and something's clearly different.", "slow numbness is sneaky. it doesn't announce itself. you just gradually become less present."],
+        choiceSets: [
+          ["i've been numb for months", "i stopped caring about things i used to", "i lost my spark gradually"],
+          ["i can't pinpoint when it started", "things that mattered slowly stopped mattering", "the aliveness just left over time"],
+          ["the timeline is fuzzy but it's been a long time", "caring became less possible slowly", "i used to feel more than i do now"]
+        ]
+      },
+      {
+        titles: ["default setting", "always ran a bit cooler", "detachment might be your baseline"],
+        bodies: ["some people just process emotions differently. sometimes it's wiring. sometimes it was learned early.", "detachment isn't always a problem. but if it's getting in the way of connection, that's worth looking at.", "emotional distance can be protective or it can be a wall. the difference is worth figuring out."],
+        choiceSets: [
+          ["emotions were never safe to show growing up", "i just process differently", "i'm not sure it's even a problem"],
+          ["feelings weren't welcomed where i grew up", "i've always been more in my head than my heart", "it works for me most of the time"],
+          ["my family didn't do emotional expression", "logic always came easier than feeling", "i'm not sure there's anything wrong with it"]
+        ]
+      },
+      {
+        titles: ["emotional overload", "volume turned all the way down", "too much at once so it all went quiet"],
+        bodies: ["too much at once and your system just turned everything down. it's a survival move.", "when emotional input exceeds what you can handle, going numb is the system protecting itself.", "your nervous system hit capacity and did the only thing it could. shut some things off."],
+        choiceSets: [
+          ["too many things hitting at once", "i just couldn't handle it all", "i went quiet inside"],
+          ["everything came at me at the same time", "i hit my limit and shut off", "i stopped feeling to get through it"],
+          ["the volume of hard stuff was too high", "i maxed out and the feeling just stopped", "i needed to go numb to keep functioning"]
+        ]
+      }
+    ],
+    {
+      final: true,
+      titles: ["numbness understood.", "makes sense bro.", "that tracks."],
+      bodies: ["you're not broken. you're protected. the feeling's still in there — just behind a wall you built for a reason.", "numbness is temporary. it's not who you are — it's what you did to survive something. that's different.", "the wall served you. at some point it becomes the thing stopping you from living fully. you'll know when."],
+      tips: [
+        "don't force feeling. expose yourself to something that moves you — a song, a show, a memory. give the wall a small opening.",
+        "physical sensation can bypass emotional numbness. cold shower, hard exercise, being outside. start with the body.",
+        "talk to someone. not necessarily about the big thing. just a real conversation. connection cracks numbness slowly.",
+        "be patient with yourself. numbness is the system recovering. it lifts on its own timeline, not yours."
+      ]
+    }
+  ]},
+
+  shame: { steps: [
+    {
+      titles: ["what's the shame about?", "where's it sitting?", "what's the shame pointing at?"],
+      bodies: ["shame says 'i am bad', not just 'i did something bad'. that difference matters a lot.", "shame is one of the heaviest ones. let's get specific about where it's coming from.", "shame hides. let's get it into the light a little."],
+      choiceSets: [
+        ["something i did", "how i look or who i am", "things i've been through", "feeling like less than everyone else"],
+        ["a specific action or choice", "my identity or my body", "experiences from my past", "a general sense of not being enough"],
+        ["something i'm responsible for", "shame about being me", "things that happened to me", "chronic unworthiness"]
+      ]
+    },
+    [
+      {
+        titles: ["guilt vs shame", "action vs identity", "you did something — that's not the same as being something"],
+        bodies: ["guilt says what you did was wrong. shame says YOU are wrong. those are really different things.", "you're not the worst thing you've ever done. everyone has something they're not proud of.", "what you did can be addressed. who you are can't be the problem. those are different things."],
+        choiceSets: [
+          ["i hurt someone", "i failed at something", "i made a choice i can't undo"],
+          ["i did something i regret", "i let myself or others down", "i can't take back what happened"],
+          ["someone got hurt because of me", "i didn't live up to something important", "i made a call i wish i could reverse"]
+        ]
+      },
+      {
+        titles: ["self-image stuff", "shame about being you", "someone taught you that you weren't enough"],
+        bodies: ["shame about your body, your personality, your brain. somewhere someone taught you that you weren't enough.", "the way you see yourself was mostly shaped by early experiences and feedback. it's not objective truth.", "the inner critic that tells you you're not enough didn't come from nowhere. it was installed. and it can be uninstalled."],
+        choiceSets: [
+          ["i got criticised a lot growing up", "i compare myself to everyone", "i don't feel like i fit anywhere"],
+          ["i was made to feel not good enough early on", "i measure myself against others constantly", "i feel like an outsider most places"],
+          ["messages i got growing up made me feel inadequate", "comparison is constant and always unflattering", "i never quite belonged anywhere"]
+        ]
+      },
+      {
+        titles: ["survivor shame", "carrying what happened to you", "that's not yours to carry bro"],
+        bodies: ["feeling ashamed of things that happened to you — things you didn't choose or control. that's not yours to carry.", "what was done to you is not a reflection of your worth. shame gets confused about this and it's one of its cruelest tricks.", "things that happened to you don't define you. you are not your history."],
+        choiceSets: [
+          ["something was done to me", "my past feels like a burden", "i'm scared of people knowing"],
+          ["things happened that i didn't choose", "i feel defined by what i went through", "i hide parts of my history"],
+          ["something happened to me that i carry silently", "my past feels like something i have to hide", "i'm ashamed of things that were done to me"]
+        ]
+      },
+      {
+        titles: ["the not enough thing", "chronic insufficiency", "the baseline of feeling lesser"],
+        bodies: ["that constant feeling of being behind, lesser, not quite right. it's exhausting to live with.", "that 'everyone else has it together except me' feeling is almost universal. people are better at hiding it than you think.", "feeling fundamentally not enough is usually the result of years of comparison and criticism. it's a learned feeling, not a fact."],
+        choiceSets: [
+          ["i never feel like i've done enough", "i don't feel worthy of good things", "i make myself small around others"],
+          ["nothing i do ever feels sufficient", "i feel like i don't deserve good stuff", "i shrink myself to not take up space"],
+          ["the bar keeps moving and i can never reach it", "good things feel like they're for other people", "i minimise myself before others can"]
+        ]
+      }
+    ],
+    {
+      final: true,
+      titles: ["shame faced.", "that took guts bro.", "you brought it into the light."],
+      bodies: ["shame only survives in silence. you just said it out loud. that's not nothing.", "the fact that you named it is already disrupting it. shame loses power when it gets seen.", "shame needs darkness. you just introduced a little light. keep going."],
+      tips: [
+        "shame needs secrecy to survive. tell one person one real thing about yourself. doesn't have to be the big thing. just something honest.",
+        "write down the shameful thing, then write: 'and i'm still a full person'. read it back. the two things can both be true.",
+        "ask yourself: would i judge a close friend this harshly for this? the answer is almost always no. try applying that same standard to yourself.",
+        "get it out of isolation. shame that stays private stays powerful. it shrinks when it gets witnessed by the right person."
+      ]
+    }
+  ]},
+
+  grief: { steps: [
+    {
+      titles: ["what did you lose?", "grief is specific. what's it about?", "what's the loss?"],
+      bodies: ["grief isn't just death. it's any loss that was real to you.", "whatever you lost — if it mattered, the grief is valid. let's figure out what shape it's in.", "grief comes in a lot of forms. let's find yours."],
+      choiceSets: [
+        ["someone i loved", "a relationship that ended", "a version of my life i counted on", "something i can't quite name"],
+        ["a person who's gone", "a connection that broke", "a future i was planning on", "just a deep sense of loss"],
+        ["a person i lost", "a relationship that ended", "plans or dreams that fell through", "an unnamed hollow feeling"]
+      ]
+    },
+    [
+      {
+        titles: ["that's the heaviest one", "losing someone is something else", "person-loss is profound"],
+        bodies: ["grief over a person doesn't follow a timeline. it goes in waves and hits when you least expect it.", "there's no right way to grieve someone. whatever you're feeling — including numbness — is valid.", "the loss of a person leaves a specific shape-shaped hole. nothing fills it. you just learn to carry it differently."],
+        choiceSets: [
+          ["they passed away", "they're gone from my life but still exist", "i lost them gradually"],
+          ["they died", "we're estranged or cut off", "it was a slow fade or ending"],
+          ["death took them", "distance or estrangement removed them", "the relationship ended slowly over time"]
+        ]
+      },
+      {
+        titles: ["relationship grief is real grief", "losing a person you chose", "the end of a relationship is multiple losses"],
+        bodies: ["the end of a relationship is several losses at once — the person, the future you imagined, the daily habits you shared.", "people underestimate how much a breakup or falling out takes. it's a real mourning process.", "you built something. it ended. the grief is proportional to what was there."],
+        choiceSets: [
+          ["a romantic relationship ended", "a close friendship broke down", "a family relationship fell apart"],
+          ["me and someone i loved broke up", "someone i was close to is no longer in my life", "a family connection got severed"],
+          ["romantic love ended", "a deep friendship dissolved", "a family bond broke"]
+        ]
+      },
+      {
+        titles: ["grieving a future", "mourning what could have been", "the loss of a life you planned on"],
+        bodies: ["you can grieve things that never happened — a path you didn't take, a life you planned for. that's a real loss.", "losing the version of your life you thought you'd have is its own grief. nobody talks about it enough.", "the future you imagined was real to you. losing it is a real loss."],
+        choiceSets: [
+          ["i had to give up on something big", "life went a different direction than i planned", "i lost who i thought i'd become"],
+          ["a dream or goal didn't happen", "things went sideways from the plan", "i'm not the person i thought i'd be"],
+          ["something i worked toward didn't come through", "the expected path closed off", "my sense of where i was going got taken away"]
+        ]
+      },
+      {
+        titles: ["grief without a label", "loss you can't fully name", "something's gone but you can't point to it"],
+        bodies: ["sometimes grief is diffuse. a feeling of loss with no clear object. that's still grief.", "not being able to name what you lost doesn't make it less real. sometimes it's a feeling, an era, a sense of self.", "the unnamed losses are sometimes the loneliest because they're hard to explain to anyone."],
+        choiceSets: [
+          ["something feels permanently gone", "i feel like i lost a part of myself", "things just feel different now"],
+          ["i can't pinpoint it but something's missing", "i feel hollowed out by something unnamed", "something that was here isn't anymore"],
+          ["a vague but persistent sense of loss", "something inside feels absent", "before and after something i can't name"]
+        ]
+      }
+    ],
+    {
+      final: true,
+      titles: ["grief acknowledged.", "you're allowed to grieve this.", "this is real loss."],
+      bodies: ["grief doesn't have an expiry date and it doesn't care about logic. it needs time and space.", "whatever you lost was real. so the pain is real. don't let anyone put a timeline on that.", "grief is the price of love and attachment. it means something mattered. that's not a bad thing."],
+      tips: [
+        "don't try to rush through it. grief that gets suppressed just resurfaces later, usually harder.",
+        "talk about the person or thing you lost. out loud. keeping it inside compresses it into something heavier.",
+        "grief and gratitude can coexist. the loss hurts because what you had was worth having. both can be true.",
+        "let yourself have bad days without calling it regression. grief isn't linear. the waves come and go."
+      ]
+    }
+  ]},
+
+  burnout: { steps: [
+    {
+      titles: ["how long have you been running on empty?", "when did the burnout set in?", "how far in are you?"],
+      bodies: ["burnout isn't just being tired. it's what happens when you give too much for too long.", "this isn't about one bad week. something's been draining you and it's caught up.", "burnout builds slowly then hits all at once. let's figure out where you're at."],
+      choiceSets: [
+        ["work or school has been relentless", "i've been carrying too much for too long", "i stopped caring about things i used to", "i have nothing left to give"],
+        ["professional demands broke me down", "the load has been too heavy", "the motivation just died", "i'm completely depleted"],
+        ["the grind got me", "responsibility overload", "the passion ran out", "empty tank"]
+      ]
+    },
+    [
+      {
+        titles: ["the grind got you", "output without recovery", "demanded too much for too long"],
+        bodies: ["when demands keep coming and rest never does, the system eventually stops cooperating.", "work or school burnout is real. your brain is protecting itself by refusing to perform.", "you pushed past sustainable for too long. the body is doing the only rational thing — refusing to keep going."],
+        choiceSets: [
+          ["i can't find motivation anymore", "i dread starting every day", "i'm putting in hours but nothing comes out"],
+          ["the drive is completely gone", "waking up and doing this again feels impossible", "i'm going through the motions"],
+          ["motivation disappeared entirely", "the daily start feels unbearable", "i'm producing nothing despite the hours"]
+        ]
+      },
+      {
+        titles: ["the weight got too heavy", "carrying others' weight too long", "over-responsibility burnout"],
+        bodies: ["being the strong one, the responsible one, the reliable one — at some point that catches up with you.", "burnout from over-responsibility is real. you can't give what you don't have.", "when you're everyone's support structure, you need support too. and if you're not getting it, this happens."],
+        choiceSets: [
+          ["i'm always the responsible one", "nobody helps me the way i help others", "i forgot how to ask for help"],
+          ["i carry the weight for too many people", "the support doesn't flow both ways", "i don't know what i need anymore"],
+          ["i've been everyone's rock and nobody's been mine", "the give and take is completely off", "i've lost track of my own needs"]
+        ]
+      },
+      {
+        titles: ["compassion fatigue", "the caring just stopped working", "motivation and meaning dried up"],
+        bodies: ["when you care so hard for so long, your capacity to care can just turn off. it's your system's last resort.", "losing the drive for things you used to care about is a serious signal. you're running on fumes.", "when meaning disappears from work you used to love, that's not a character flaw. that's burnout."],
+        choiceSets: [
+          ["i used to love what i do", "i feel cynical about everything", "nothing feels meaningful anymore"],
+          ["the passion dried up completely", "i've become bitter about things i used to care about", "i'm just going through the motions"],
+          ["something i loved has become something i dread", "cynicism replaced what used to be enthusiasm", "work or school feels hollow now"]
+        ]
+      },
+      {
+        titles: ["completely depleted", "tank on empty", "nothing left anywhere"],
+        bodies: ["when you literally have nothing left — not emotionally, not physically, not creatively. that's deep burnout.", "this level of depletion doesn't fix with a weekend. your system needs real recovery time.", "you're not lazy. you're empty. those are very different things."],
+        choiceSets: [
+          ["i can't give any more to anyone", "even small tasks feel enormous", "i just want to disappear for a while"],
+          ["i'm running on nothing", "basic stuff requires more than i have", "i fantasise about just stopping everything"],
+          ["i have no reserves left at all", "tasks that should be easy are monumental", "i daydream about dropping everything"]
+        ]
+      }
+    ],
+    {
+      final: true,
+      titles: ["burnout confirmed.", "you're not lazy bro. you're depleted.", "makes total sense."],
+      bodies: ["burnout is what happens when output consistently exceeds recovery. your body's doing exactly what it should.", "you're not weak. you went too long giving too much. now your system's cashing the cheque.", "rest isn't a reward for finishing. it's what makes finishing possible at all."],
+      tips: [
+        "the first step is stopping the bleed. identify the one biggest drain and reduce it, even slightly. start there.",
+        "actual recovery from burnout takes weeks, not a weekend. plan for real time off and stop feeling guilty about needing it.",
+        "sleep, eat, move, sunlight. before anything else. your executive function won't come back without the basics.",
+        "burnout recovery requires doing less, not more. every instinct says push through. the right answer is the opposite."
+      ]
+    }
+  ]},
+
+  fear: { steps: [
+    {
+      titles: ["what are you afraid of?", "what's the fear actually about?", "let's find what's underneath it."],
+      bodies: ["fear's specific. even when it feels vague, there's something underneath.", "let's find what your fear is actually pointing at.", "fear's always pointing at something. let's figure out what."],
+      choiceSets: [
+        ["something specific happening", "the unknown", "losing someone or something", "myself"],
+        ["a concrete threat or scenario", "uncertainty about what's ahead", "something important being taken away", "what i'm capable of"],
+        ["a specific fear", "fear of uncertainty", "loss and attachment", "fear turned inward"]
+      ]
+    },
+    [
+      {
+        titles: ["concrete fear", "there's a real threat here", "fear doing its job"],
+        bodies: ["when there's a specific threat, fear is doing exactly what it's supposed to. it's a warning signal.", "a clear fear is actually easier to work with than a vague one. at least we know what we're dealing with.", "specific fear is actionable. vague fear is harder. the fact that yours has a target is something to work with."],
+        choiceSets: [
+          ["a health concern", "a situation i'm in", "something i have to face soon"],
+          ["i'm worried about health — mine or someone's", "i'm in a threatening situation", "something's coming that i'm dreading"],
+          ["a medical or physical fear", "a dangerous or difficult circumstance", "an approaching thing i can't avoid"]
+        ]
+      },
+      {
+        titles: ["fear of the unknown", "uncertainty is its own threat", "the what's-coming fear"],
+        bodies: ["humans are wired to find uncertainty threatening. your brain prefers a bad known over a good unknown.", "not knowing what's ahead activates the same fear response as actual danger. that's how real uncertainty feels.", "the unknown future is the oldest fear there is. you're not alone in this one."],
+        choiceSets: [
+          ["i don't know what's coming next", "everything feels uncertain right now", "i can't predict or control anything"],
+          ["the future is completely unclear to me", "i've lost all sense of what's ahead", "i need certainty and there isn't any"],
+          ["the lack of a clear path is terrifying", "too many variables and no visibility", "i hate not knowing and right now i don't know anything"]
+        ]
+      },
+      {
+        titles: ["fear of loss", "scared of losing what matters", "attachment and the fear of losing it"],
+        bodies: ["fear of losing what you have — people, stability, health, identity — is one of the most fundamental fears.", "the thing you're afraid of losing must matter a lot. that's not a flaw — that's care.", "fear of loss is fear of love with the protective gear on."],
+        choiceSets: [
+          ["someone important to me", "my stability or security", "my health or someone else's"],
+          ["a person i love", "the life i've built", "physical wellbeing"],
+          ["a relationship or person", "financial or home stability", "health"]
+        ]
+      },
+      {
+        titles: ["scared of yourself", "fear turned inward", "your own mind is what's scaring you"],
+        bodies: ["fear of what you're capable of, what you're becoming, or what you might do. that's a heavy one.", "being afraid of your own thoughts or impulses is more common than anyone admits. you're not alone in this.", "fear of yourself usually means you're paying attention. the concern is itself a good sign."],
+        choiceSets: [
+          ["my own thoughts scare me", "i'm afraid of what i might do", "i don't recognise who i'm becoming"],
+          ["i have thoughts that frighten me", "i'm scared of how i react sometimes", "i'm changing in ways i don't like"],
+          ["some of my thoughts alarm me", "my impulses or reactions scare me", "i'm not sure i trust myself right now"]
+        ]
+      }
+    ],
+    {
+      final: true,
+      titles: ["fear named.", "you faced it enough to say it.", "that's already something."],
+      bodies: ["fear only gets bigger when you avoid it. naming it — even just to yourself — starts to shrink it.", "the bravest thing isn't not being afraid. it's moving anyway, even just one small step.", "fear and action can coexist. you don't have to not be afraid. you just have to move anyway."],
+      tips: [
+        "name the fear precisely. vague fear is bigger than specific fear. 'i'm afraid of X' is more manageable than free-floating dread.",
+        "ask: what's the most likely outcome? not worst-case. most likely. your brain defaults to worst-case and it's almost always wrong.",
+        "do one small thing in the direction of what scares you. not the whole thing. just one inch of movement.",
+        "exposure is the only thing that actually reduces fear long-term. avoidance makes it grow. small doses of the thing help."
+      ]
+    }
+  ]},
+
+  guilt: { steps: [
+    {
+      titles: ["what's the guilt about?", "what are you holding yourself accountable for?", "what did you do or not do?"],
+      bodies: ["guilt means you have a conscience. let's figure out if this guilt is useful or just punishing.", "guilt is healthy when it leads somewhere. let's figure out what kind this is.", "there are different kinds of guilt. some useful, some not. let's find yours."],
+      choiceSets: [
+        ["something i did to someone", "something i didn't do", "feeling guilty for no clear reason", "feeling guilty for doing okay when others aren't"],
+        ["i hurt or wronged someone", "i failed to do something i should have", "just a general guilt feeling", "guilt about things going well for me"],
+        ["an action i regret", "an inaction i regret", "unnamed chronic guilt", "survivor guilt"]
+      ]
+    },
+    [
+      {
+        titles: ["guilt over an action", "you did something you regret", "the act and what it means"],
+        bodies: ["healthy guilt over something you did is a sign you care about doing right. now the question is what to do with it.", "the fact that you feel guilty means you know what you did wasn't aligned with your values. that self-awareness matters.", "feeling guilty about what you did is appropriate. living in the guilt indefinitely isn't."],
+        choiceSets: [
+          ["i hurt someone intentionally", "i hurt someone by accident", "i acted against my own values"],
+          ["i did something that caused harm knowingly", "the harm wasn't intended but it happened", "i did something i'm not proud of"],
+          ["i made a deliberate choice that hurt someone", "collateral damage i didn't foresee", "i went against who i want to be"]
+        ]
+      },
+      {
+        titles: ["guilt of omission", "the thing you didn't do", "the action you didn't take"],
+        bodies: ["guilt about what you didn't do — didn't say, didn't show up for, didn't prevent — can be just as heavy.", "inaction guilt is tricky because the moment often passed before you could fully process it.", "the things we didn't do can haunt as much as the things we did."],
+        choiceSets: [
+          ["i wasn't there when someone needed me", "i stayed silent when i should've spoken up", "i let something slide i shouldn't have"],
+          ["i missed something important for someone", "i didn't say what needed to be said", "i looked the other way"],
+          ["i failed to show up", "i chose silence over speaking", "i let something happen i could've addressed"]
+        ]
+      },
+      {
+        titles: ["guilt without a clear cause", "just always feeling guilty", "chronic guilt as a baseline"],
+        bodies: ["some people carry guilt as a default state, not tied to anything specific. that's usually learned, not deserved.", "chronic guilt with no clear source often means you were taught to feel responsible for things that aren't yours.", "if you're always apologising and always feeling guilty, that's worth looking at. it's usually not actually about anything you did."],
+        choiceSets: [
+          ["i just always feel like i've done something wrong", "i apologise for everything even when i don't need to", "guilt is kind of my baseline"],
+          ["i feel guilty even when i haven't done anything", "i over-apologise constantly", "i feel responsible for how others feel"],
+          ["i wake up feeling guilty with no specific reason", "sorry is my most used word", "i absorb responsibility that isn't mine"]
+        ]
+      },
+      {
+        titles: ["survivor guilt", "guilty for things going okay", "feeling bad that you're okay"],
+        bodies: ["feeling guilty for doing well, for surviving, for having things others don't — that's its own specific weight.", "survivor guilt makes you second-guess your own good things. generous in a way, but it's not serving you.", "your good fortune doesn't diminish anyone else's. those two things aren't in competition."],
+        choiceSets: [
+          ["i feel guilty that things are okay for me when others struggle", "i feel guilty for leaving or moving on", "i feel guilty for succeeding when others haven't"],
+          ["i feel bad that my life is going okay", "i feel like i abandoned something by moving forward", "others have it worse and i feel guilty for struggling"],
+          ["my doing well feels like a betrayal of people who aren't", "moving on from hard things feels disloyal", "i minimise my own success because others don't have it"]
+        ]
+      }
+    ],
+    {
+      final: true,
+      titles: ["guilt noted.", "you're carrying that.", "conscience clocked."],
+      bodies: ["guilt that leads to change or repair is useful. guilt that just sits there and punishes is not.", "you have a conscience bro. that's actually something. now the work is using it to move, not just to suffer.", "the goal isn't to feel worse. it's to do something with the feeling."],
+      tips: [
+        "if there's something you can actually repair or apologise for — do it. guilt's job is to push you there. let it.",
+        "if you can't repair it, write a letter you don't send. get it out of your body and onto paper.",
+        "guilt and shame are different. guilt says 'i did something bad'. shame says 'i am bad'. only one of those is true.",
+        "make one genuine amends — big or small. action dissolves guilt better than thinking does."
+      ]
+    }
+  ]},
+
+  frustration: { steps: [
+    {
+      titles: ["what's blocking you?", "what's not moving the way it should?", "where's the friction?"],
+      bodies: ["frustration is what happens when effort meets resistance. let's find the block.", "something's in the way. let's figure out what it is.", "there's a gap between where you are and where you want to be. let's find it."],
+      choiceSets: [
+        ["a goal i can't reach", "someone who keeps getting in the way", "a situation i can't change", "myself"],
+        ["progress keeps getting blocked", "someone's making things harder", "i'm stuck in something fixed", "my own limitations are the problem"],
+        ["the outcome isn't coming no matter what i do", "a person is the obstacle", "the circumstances won't budge", "i'm getting in my own way"]
+      ]
+    },
+    [
+      {
+        titles: ["effort without progress", "the blocked goal", "trying and not getting there"],
+        bodies: ["putting in the work and not seeing results is one of the most demoralising feelings. especially when you're actually trying.", "when you can see where you want to go but can't get there, it's genuinely maddening.", "sustained effort with no visible return breaks motivation. that's not weakness — it's a natural response."],
+        choiceSets: [
+          ["i keep trying and nothing moves", "i'm doing everything right and it's still not working", "every time i get close something sets me back"],
+          ["the progress just isn't coming", "i'm putting in work and getting nothing back", "obstacles keep appearing right when i think i'm close"],
+          ["the harder i try the further it seems", "i'm doing the right things and seeing nothing", "the goalpost keeps moving"]
+        ]
+      },
+      {
+        titles: ["there's a person making this harder", "interpersonal friction", "someone's the obstacle"],
+        bodies: ["when someone else is the block — whether they know it or not — frustration has a specific edge to it.", "having your progress blocked by another person is harder because you can't fully control it.", "dealing with a difficult person is exhausting because they have their own logic that you can't override."],
+        choiceSets: [
+          ["they keep undermining me", "they won't listen or cooperate", "they make everything harder than it needs to be"],
+          ["someone's actively getting in my way", "nobody's on the same page as me", "dealing with this person is draining"],
+          ["they're working against what i'm trying to do", "communication keeps breaking down", "the dynamic with this person is exhausting"]
+        ]
+      },
+      {
+        titles: ["stuck in something that won't move", "fighting something immovable", "frustration with a fixed situation"],
+        bodies: ["the hardest frustration is when the block is something you genuinely can't change. that's when it tips toward helplessness.", "being frustrated with a fixed situation requires a different approach — your relationship to it, not changing it.", "when the external can't change, the only lever is internal. that's hard but it's real."],
+        choiceSets: [
+          ["the situation is out of my control", "i've tried everything and nothing helps", "i'm trapped and i can't fix it"],
+          ["i can't change what's happening", "there's no option that actually solves this", "i'm stuck and there's no visible way out"],
+          ["the circumstances are fixed and i hate them", "every solution hits a wall", "i feel trapped with no real options"]
+        ]
+      },
+      {
+        titles: ["frustrated with yourself", "self-directed frustration", "you're the obstacle rn"],
+        bodies: ["being your own obstacle is a specific kind of frustration. wanting to do better while something keeps getting in the way.", "frustration with yourself often means high standards that you're not meeting. that gap is painful.", "we're often our own toughest opponent. that doesn't make the frustration less real."],
+        choiceSets: [
+          ["i keep getting in my own way", "i know what i should do and i don't do it", "i'm not meeting my own expectations"],
+          ["my habits keep blocking me", "i can't seem to change even when i want to", "i'm disappointed in myself"],
+          ["self-sabotage keeps showing up", "i understand what needs to change and still don't do it", "the gap between who i want to be and who i am"]
+        ]
+      }
+    ],
+    {
+      final: true,
+      titles: ["frustration located.", "makes sense bro.", "friction acknowledged."],
+      bodies: ["frustration means you care about the outcome. that's actually a good sign. the energy just needs somewhere useful to go.", "the energy in frustration is real. the trick is redirecting it from banging against the wall to finding the door.", "you're not wrong to be frustrated. the question is what to do with it."],
+      tips: [
+        "separate what you can control from what you can't. focus exclusively on what's in your zone.",
+        "sometimes frustration means the approach needs to change, not the goal. try something different — even a small variation.",
+        "physical release works fast for frustration. move hard for 10 minutes and then come back to it with a clearer head.",
+        "name the thing blocking you as specifically as possible. vague frustration is bigger than specific frustration."
+      ]
+    }
+  ]},
+
+  hopelessness: { steps: [
+    {
+      titles: ["what does hopeless feel like right now?", "where's the hopelessness coming from?", "what's making the future look blank?"],
+      bodies: ["hopelessness is heavy. let's get specific about what you're not seeing a way through.", "when hope runs out it's usually about something specific. let's find it.", "this one's serious. let's slow down and look at it carefully."],
+      choiceSets: [
+        ["i don't see a way forward", "things have been bad for so long", "i've tried and it never changes", "i just don't see the point"],
+        ["the future looks blank", "it's been dark for too long", "effort doesn't seem to matter", "i've lost my sense of purpose"],
+        ["no path forward is visible", "sustained difficulty has worn me down", "trying feels futile", "meaning has gone missing"]
+      ]
+    },
+    [
+      {
+        titles: ["can't see the path", "the road disappears here", "vision's blocked right now"],
+        bodies: ["when you can't see a way forward, it doesn't mean there isn't one. it means your vision is blocked right now.", "hopelessness narrows what you can see. the options don't disappear — they become invisible.", "a blocked view isn't the same as no way out. the path can exist even when you can't see it."],
+        choiceSets: [
+          ["every option seems worse than the last", "i've thought through everything and nothing works", "the situation seems genuinely unsolvable"],
+          ["all roads look bad", "i've considered everything and none of it helps", "i'm at a dead end"],
+          ["every direction has a wall", "i've mapped the options and none work", "i can't logic or feel my way out of this"]
+        ]
+      },
+      {
+        titles: ["worn down by time", "it's been hard for too long", "the sustained difficulty"],
+        bodies: ["when difficult stretches go on long enough, your brain starts assuming this is just how it is. it's a logical error, but it feels completely true.", "sustained difficulty resets your baseline in a dark direction. it's not forever — even when it feels like forever.", "long periods of struggle change how you see things. it's a perceptual shift, not a factual one."],
+        choiceSets: [
+          ["this has been going on for months or years", "i can't remember what okay felt like", "i keep waiting for it to change and it hasn't"],
+          ["it's been dark for so long it feels permanent", "i don't remember what normal felt like", "i kept expecting it to pass and it didn't"],
+          ["this has been my reality for long enough that i've stopped expecting better", "normal feels like a foreign concept", "i've given up waiting for things to change"]
+        ]
+      },
+      {
+        titles: ["effort without return", "you've tried. it didn't change.", "learned helplessness is real"],
+        bodies: ["trying repeatedly and seeing no result is one of the most demoralising experiences. learned helplessness is real.", "when effort stops producing results, your brain learns to stop trying. that's not weakness — that's conditioning.", "you didn't give up. you were taught by repeated failure that trying doesn't help. that's different."],
+        choiceSets: [
+          ["i've tried everything i can think of", "nothing i do makes a difference", "i've given this everything and it hasn't moved"],
+          ["i've exhausted every option", "my actions don't seem to change anything", "i've put in so much and gotten nothing back"],
+          ["i've done everything right and it still doesn't move", "the effort-outcome connection seems broken", "i've tried so many times i can't try again"]
+        ]
+      },
+      {
+        titles: ["lost the why", "meaning went missing", "the point disappeared"],
+        bodies: ["when the point disappears, everything feels like going through motions with no destination.", "loss of meaning is one of the deepest kinds of hopelessness — it's not just 'things are bad', it's 'so what?'.", "when you can't find a reason to keep going, that's not weakness. that's a signal that something needs to fundamentally shift."],
+        choiceSets: [
+          ["i don't know what i'm doing any of this for", "nothing feels meaningful or worth it", "i've lost my sense of direction"],
+          ["the purpose is gone", "i can't find a reason to keep pushing", "i don't know what i'm working toward"],
+          ["the 'why' behind everything has disappeared", "motivation requires meaning and i don't have it", "i've lost the thread of what any of it is for"]
+        ]
+      }
+    ],
+    {
+      final: true,
+      titles: ["hope is thin right now.", "that's a heavy thing to carry bro.", "this one's real."],
+      bodies: ["hopelessness is real and it's painful. it's also a state, not a fact. what feels permanent usually isn't.", "if this goes deep, please talk to someone. not because you're broken — because this one isn't meant to be carried alone.", "even a small reduction in hopelessness is progress. you don't need full hope. just enough to take one step."],
+      tips: [
+        "shrink the window. don't think about the future — just today. sometimes just getting through today is enough.",
+        "find one small thing that isn't completely terrible. not to minimise the bad — just to train your attention back to a wider view.",
+        "if the hopelessness is deep and persistent, talk to a professional. seriously bro. this one is meant to be shared.",
+        "do one thing, any thing, that's slightly in the direction of better. movement — even tiny — is the opposite of hopelessness."
+      ]
+    }
+  ]},
+
+  heartbreak: { steps: [
+    {
+      titles: ["what happened?", "how'd the heart get broken?", "what's the heartbreak about?"],
+      bodies: ["heartbreak is real pain. let's figure out what kind.", "this is one of the worse ones. let's figure out where you're at.", "hearts break in different ways. let's find yours."],
+      choiceSets: [
+        ["a relationship ended", "someone i love hurt me", "feelings that weren't returned", "someone drifted away from me"],
+        ["a breakup or ending", "betrayal or being let down", "unrequited feelings", "a relationship that slowly faded"],
+        ["an ending", "a hurt from someone you trusted", "one-sided love", "a gradual loss of connection"]
+      ]
+    },
+    [
+      {
+        titles: ["a real loss", "breakups are actual grief", "relationship endings hit on multiple levels"],
+        bodies: ["the end of a relationship is multiple losses at once — the person, the future, the routines, the identity. it stacks.", "people underestimate how real breakup pain is. it's grief. your brain literally processes it the same way.", "you lost something real. the pain is proportional to how real it was."],
+        choiceSets: [
+          ["it was my choice but it still hurts", "it wasn't my choice", "it was mutual but still heavy"],
+          ["i ended it and i'm still wrecked", "it was ended for me", "we both knew but it doesn't make it easier"],
+          ["i chose it and i'm still grieving it", "it was done to me", "it was mutual and still gutting"]
+        ]
+      },
+      {
+        titles: ["betrayal is its own thing", "someone you loved let you down badly", "hurt by someone you trusted"],
+        bodies: ["being hurt by someone you love hits differently because you didn't have your guard up. you trusted them.", "when someone you love causes you pain, it can rewire how safe love feels. that's worth acknowledging.", "trust and love together are vulnerable. when they get broken together, it lands hard."],
+        choiceSets: [
+          ["they cheated or lied", "they said something that cut deep", "they left without a real explanation"],
+          ["there was a betrayal of trust", "words or actions i can't unsee", "they just disappeared on me"],
+          ["infidelity or deception", "something they did or said that changed things", "a disappearance without closure"]
+        ]
+      },
+      {
+        titles: ["loving someone who doesn't love back", "the unrequited thing", "feelings that weren't returned"],
+        bodies: ["loving someone who doesn't feel it — or doesn't feel it the same way — is a specific kind of ache.", "you can grieve something that never existed. the feelings were real, even if the relationship wasn't.", "unrequited love is real loss even without a relationship to mourn. the longing itself costs something."],
+        choiceSets: [
+          ["they don't feel the same way", "i got rejected", "they chose someone else"],
+          ["my feelings weren't returned", "i put myself out there and it didn't land", "they went with someone else"],
+          ["the love was one-directional", "i was honest about how i felt and it wasn't matched", "they were interested in someone else"]
+        ]
+      },
+      {
+        titles: ["the slow heartbreak", "losing someone gradually", "the fade-out"],
+        bodies: ["sometimes people don't leave dramatically. they just drift, or life separates you, and the connection fades.", "losing someone slowly — without a clear ending — can actually be harder than a definitive break.", "no big moment, no clear ending. just a gradual pulling away that you watch happen and can't stop."],
+        choiceSets: [
+          ["we grew apart over time", "life took us in different directions", "the connection just quietly died"],
+          ["it was a gradual fading", "circumstances separated us", "things just slowly stopped working"],
+          ["the drift happened so slowly i barely noticed until it was done", "distance — literal or otherwise — took them", "the warmth just gradually left"]
+        ]
+      }
+    ],
+    {
+      final: true,
+      titles: ["heartbreak acknowledged.", "that's real pain bro.", "you're allowed to be wrecked by this."],
+      bodies: ["heartbreak is one of the most painful human experiences. it's not dramatic to say that — it's accurate.", "it will pass. not on your timeline, and not smoothly — but it will. everyone who's been through it knows that.", "the pain is proportional to what was there. if it hurts this much, it was real."],
+      tips: [
+        "feel it. don't numb it all the way. the feeling needs to move through, not get suppressed.",
+        "cut the contact loop. checking their profile, rereading messages — it restarts the grief each time. give yourself a break from it.",
+        "let yourself be taken care of. call someone. say 'i'm having a rough time'. you don't have to explain the whole thing.",
+        "don't make any big decisions right now. heartbreak distorts perspective. wait for the acute phase to pass."
+      ]
+    }
+  ]},
+
+  exhaustion: { steps: [
+    {
+      titles: ["what kind of tired is it?", "how long have you been running on fumes?", "what's depleted?"],
+      bodies: ["exhaustion comes in different types. let's figure out which one's got you.", "tired has layers. let's find which one's hitting.", "different kinds of exhaustion need different responses. let's identify yours."],
+      choiceSets: [
+        ["physically drained", "mentally flat", "emotionally done", "all of it at once"],
+        ["my body has nothing left", "my brain won't function", "i'm emotionally empty", "every part of me is wiped"],
+        ["physical depletion", "cognitive exhaustion", "emotional emptiness", "total shutdown"]
+      ]
+    },
+    [
+      {
+        titles: ["body's tapped out", "physical depletion", "the machine needs maintenance"],
+        bodies: ["when your body's genuinely exhausted, everything else suffers — focus, mood, patience, all of it.", "physical exhaustion isn't just tired. it's a signal that the machine needs real maintenance.", "your body is talking. it's using the loudest signal it has."],
+        choiceSets: [
+          ["i can't sleep or i'm sleeping too much", "i'm sick or run down", "i've just been going too hard for too long"],
+          ["my sleep is wrecked", "my body's been fighting something", "i haven't stopped in weeks or months"],
+          ["sleep is broken or excessive", "physically under the weather", "sustained overexertion with no recovery"]
+        ]
+      },
+      {
+        titles: ["brain fog is real", "cognitive exhaustion", "the processing power is gone"],
+        bodies: ["mental exhaustion feels like trying to think through mud. the capacity just isn't there.", "your brain is a muscle in a sense. and right now it's been overused beyond its capacity.", "when your mental bandwidth runs out, even simple decisions feel impossible."],
+        choiceSets: [
+          ["i can't concentrate on anything", "decisions feel impossible", "i'm making errors i wouldn't normally make"],
+          ["my focus is completely gone", "even small choices are overwhelming", "i'm not operating at capacity"],
+          ["concentration is broken", "decision fatigue is severe", "cognitive errors are happening more than usual"]
+        ]
+      },
+      {
+        titles: ["emotionally tapped", "the emotional battery is dead", "capacity to feel is gone"],
+        bodies: ["emotional exhaustion is when your capacity to feel, respond, and care just runs dry.", "when you've been feeling and processing and supporting for too long without replenishment, this happens.", "emotional bandwidth is finite. you've spent yours. it needs to be rebuilt, not pushed through."],
+        choiceSets: [
+          ["i have no emotional bandwidth left", "other people's problems feel like too much", "i feel numb to things i should care about"],
+          ["i can't hold space for anyone right now", "i've been the support and i'm worn out", "i've gone past feeling into flatness"],
+          ["my capacity for empathy or care is at zero", "being asked to show up for others is impossible right now", "i went numb because i was feeling too much for too long"]
+        ]
+      },
+      {
+        titles: ["total depletion", "nothing's running", "all systems down"],
+        bodies: ["when the physical, mental, and emotional are all wiped simultaneously, that's a serious signal.", "total exhaustion like this means something's been running at unsustainable levels for a while.", "every system is asking for the same thing: stop."],
+        choiceSets: [
+          ["i've been going non-stop", "i ignored the signs and now i'm forced to stop", "there's been no real rest in way too long"],
+          ["i've been on overdrive for too long", "my body finally forced me to slow down", "i haven't properly rested in longer than i can remember"],
+          ["sustained maximum output with no recovery", "my body made the decision for me", "rest has been absent for an unsustainable amount of time"]
+        ]
+      }
+    ],
+    {
+      final: true,
+      titles: ["exhaustion confirmed.", "your body's asking you to stop bro.", "rest is the prescription."],
+      bodies: ["this isn't laziness. this is your system refusing to operate beyond its means. it's doing the right thing.", "rest isn't a reward for finishing everything. it's what makes finishing things possible.", "you're not weak. you're depleted. those need completely different responses."],
+      tips: [
+        "the only real fix for exhaustion is rest. not efficiency hacks. actual sleep, actual downtime, actual recovery.",
+        "cancel one thing this week. not forever — just this week. don't replace it with something else.",
+        "stop calling it laziness. depleted and lazy are different things. you wouldn't call a phone lazy for needing to charge.",
+        "food, water, sleep, in that order. before you try to think your way through this, handle the basics."
+      ]
+    }
+  ]},
+
+  rejection: { steps: [
+    {
+      titles: ["what kind of rejection?", "where did it come from?", "who or what rejected you?"],
+      bodies: ["rejection is one of the most physically painful emotions — literally uses the same brain pathways as physical pain.", "let's figure out where this one's coming from.", "rejection hurts differently depending on the source. let's find yours."],
+      choiceSets: [
+        ["romantic rejection", "social rejection", "professional rejection", "rejection from family"],
+        ["someone i was interested in", "a friend group or social situation", "a job, school, or opportunity", "family not accepting me"],
+        ["turned down romantically", "left out or excluded socially", "passed over professionally", "not accepted by family"]
+      ]
+    },
+    [
+      {
+        titles: ["romantic rejection stings", "getting turned down is rough", "putting yourself out there and getting a no"],
+        bodies: ["putting yourself out there romantically and being turned down is one of the more vulnerable things you can do. respect for trying.", "rejection from someone you're into hits the ego and the heart at the same time. it's a lot.", "you took a real risk. it didn't go the way you wanted. that takes something to do and something to recover from."],
+        choiceSets: [
+          ["i asked someone out and they said no", "they pulled back or lost interest", "they chose someone else over me"],
+          ["they turned me down", "they went cold after seeming interested", "they picked someone else"],
+          ["a direct rejection", "someone fading or going distant after showing interest", "being the second choice"]
+        ]
+      },
+      {
+        titles: ["social rejection is brutal", "being left out or pushed out", "exclusion hits a primal nerve"],
+        bodies: ["humans are wired for belonging. being excluded activates real, physical pain. that's not dramatic.", "being on the outside of a group — whether deliberate or not — is genuinely painful. you're not being sensitive.", "the need to belong is one of the most basic human needs. rejection from a group attacks it directly."],
+        choiceSets: [
+          ["i got excluded from a group", "people i wanted to connect with didn't want me", "i got left out of something that mattered"],
+          ["i wasn't included", "people didn't seem to want me around", "i was made to feel unwelcome"],
+          ["deliberate exclusion", "not being welcomed by a group i wanted to be part of", "being left out of something social that mattered"]
+        ]
+      },
+      {
+        titles: ["professional rejection", "got passed over or turned down", "a no on something you worked for"],
+        bodies: ["being rejected for a job, school, or opportunity ties into your identity in a specific way. it's more than just 'no'.", "a professional rejection feels personal even when it isn't. it's still a no about something you invested in.", "you put work and hope into something. it didn't come through. that's allowed to hurt."],
+        choiceSets: [
+          ["i didn't get the job or opportunity", "my work was rejected or criticised", "i was passed over for something i wanted"],
+          ["the application didn't go through", "something i created got turned down", "someone else got what i was working toward"],
+          ["a job application was rejected", "creative or professional work got turned down", "someone else was chosen over me"]
+        ]
+      },
+      {
+        titles: ["family rejection cuts deepest", "when your own people don't accept you", "the specific pain of family not seeing you"],
+        bodies: ["rejection from family — not being accepted for who you are, being cut out — is one of the most painful there is.", "you can't choose your family and you can't make them accept you. that gap between wanting it and not getting it is real.", "family rejection hits the foundation. it touches the earliest parts of who you are."],
+        choiceSets: [
+          ["my family doesn't accept who i am", "i've been cut off or pushed out", "i don't feel like i belong in my own family"],
+          ["they don't approve of me", "i've been excluded or estranged", "i feel like a stranger in my family"],
+          ["my identity or choices aren't accepted by family", "estrangement or being cut off", "feeling like an outsider in the place that should feel most like home"]
+        ]
+      }
+    ],
+    {
+      final: true,
+      titles: ["rejection noted.", "that one's real bro.", "it hurt because it mattered."],
+      bodies: ["rejection genuinely hurts. it's not sensitive to say so — it's physiologically accurate. give yourself grace to feel it.", "one rejection doesn't define your worth or your future. it's just this one, this time.", "the pain is proportional to how much you wanted it. that's not a weakness. that's just what wanting things costs."],
+      tips: [
+        "resist the spiral into 'what's wrong with me'. the answer is probably nothing. rejection is often circumstance, not verdict.",
+        "let yourself feel the sting for a bit. don't rush past it. then, when the initial hit fades, move.",
+        "every person you admire has been rejected. it's part of the game. it doesn't get easier but it does become more familiar.",
+        "rejection is information, not identity. ask what you can learn from it. then separate the lesson from the sting."
+      ]
+    }
+  ]}
+
 };
 
 let curFeeling = null, stepIdx = 0, path = [];
@@ -261,12 +1315,12 @@ function buildBubbles() {
   feelings.forEach(f => {
     const s = f.size;
     let x = 0, y = 0, ok = false;
-    for (let t = 0; t < 200; t++) {
+    for (let t = 0; t < 500; t++) {
       x = Math.random() * (W - s - 10) + 5;
       y = Math.random() * (H - s - 80) + 75;
       ok = placed.every(p => {
         const dx = x + s/2 - p.cx, dy = y + s/2 - p.cy;
-        return Math.sqrt(dx*dx + dy*dy) > (s/2 + p.r + 12);
+        return Math.sqrt(dx*dx + dy*dy) > (s/2 + p.r + 14);
       });
       if (ok) break;
     }
@@ -289,21 +1343,24 @@ function begin(feeling) {
 }
 
 function showStep() {
-  const steps = flows[curFeeling].steps;
+  const flow = flows[curFeeling].steps;
   let node;
-  if (stepIdx === 0) node = steps[0];
-  else if (stepIdx === 1) node = steps[1][path[0]];
-  else { showFinal(steps[2]); return; }
+  if (stepIdx === 0) node = flow[0];
+  else if (stepIdx === 1) node = flow[1][path[0]];
+  else { showFinal(flow[2]); return; }
 
   document.getElementById('otag').textContent = curFeeling;
-  document.getElementById('otitle').textContent = node.title;
-  document.getElementById('obody').textContent = node.body;
+  document.getElementById('otitle').textContent = pick(node.titles);
+  document.getElementById('obody').textContent = pick(node.bodies);
+
   const ch = document.getElementById('choices');
   ch.innerHTML = '';
-  node.choices.forEach(c => {
+  const choiceSet = pick(node.choiceSets);
+  choiceSet.forEach((c, i) => {
     const b = document.createElement('button');
-    b.className = 'cbtn'; b.textContent = c;
-    b.onclick = () => { path.push(c); stepIdx++; showStep(); };
+    b.className = 'cbtn';
+    b.textContent = c;
+    b.onclick = () => { path.push(i); stepIdx++; showStep(); };
     ch.appendChild(b);
   });
 
@@ -319,9 +1376,9 @@ function showStep() {
 
 function showFinal(node) {
   document.getElementById('overlay').classList.remove('on');
-  document.getElementById('ftitle').textContent = node.title;
-  document.getElementById('fbody').textContent = node.body;
-  document.getElementById('ftip').textContent = '→  ' + node.tip;
+  document.getElementById('ftitle').textContent = pick(node.titles);
+  document.getElementById('fbody').textContent = pick(node.bodies);
+  document.getElementById('ftip').textContent = '→  ' + pick(node.tips);
   document.getElementById('final').classList.add('on');
 }
 
