@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CaveMan</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.0.0/dist/tabler-icons.min.css">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #000; }
+#cave {
+  background: #000;
+  width: 100%;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+#header {
+  position: absolute;
+  top: 24px;
+  left: 0; right: 0;
+  text-align: center;
+  z-index: 5;
+  pointer-events: none;
+}
+#header h1 {
+  color: rgba(255,255,255,0.35);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  font-weight: 400;
+}
+#header p {
+  color: rgba(255,255,255,0.7);
+  font-size: 20px;
+  font-weight: 500;
+  margin-top: 6px;
+}
+.bubble {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.2);
+  background: rgba(255,255,255,0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  text-align: center;
+  animation: float linear infinite;
+  transition: border-color 0.2s, background 0.2s;
+}
+.bubble:hover {
+  border-color: rgba(255,255,255,0.6);
+  background: rgba(255,255,255,0.12);
+}
+.bubble span {
+  color: rgba(255,255,255,0.8);
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0.03em;
+  pointer-events: none;
+}
+@keyframes float {
+  0%   { transform: translateY(0px); }
+  50%  { transform: translateY(-12px); }
+  100% { transform: translateY(0px); }
+}
+#overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: #000;
+  z-index: 20;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 28px;
+}
+#overlay.on { display: flex; }
+#back {
+  position: absolute;
+  top: 18px; left: 18px;
+  background: none; border: none;
+  color: rgba(255,255,255,0.35);
+  font-size: 13px; letter-spacing: 0.08em;
+  cursor: pointer; font-family: inherit;
+}
+#back:hover { color: rgba(255,255,255,0.8); }
+#dots { display: flex; gap: 7px; margin-bottom: 24px; }
+.dot { width: 5px; height: 5px; border-radius: 50%; background: rgba(255,255,255,0.18); }
+.dot.on { background: rgba(255,255,255,0.75); }
+#otag { color: rgba(255,255,255,0.3); font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 8px; }
+#otitle { color: #fff; font-size: 22px; font-weight: 500; text-align: center; margin-bottom: 10px; }
+#obody { color: rgba(255,255,255,0.55); font-size: 14px; line-height: 1.7; text-align: center; max-width: 380px; margin-bottom: 28px; }
+#choices { display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 380px; }
+.cbtn {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 100px;
+  color: #fff;
+  font-size: 13px;
+  font-family: inherit;
+  padding: 13px 22px;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+.cbtn:hover { background: rgba(255,255,255,0.13); border-color: rgba(255,255,255,0.45); }
+#final {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: #000;
+  z-index: 20;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 28px;
+  text-align: center;
+}
+#final.on { display: flex; }
+#ftitle { color: #fff; font-size: 22px; font-weight: 500; margin-bottom: 10px; }
+#fbody { color: rgba(255,255,255,0.55); font-size: 14px; line-height: 1.7; max-width: 360px; margin-bottom: 24px; }
+#ftip {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 14px;
+  padding: 16px 22px;
+  color: rgba(255,255,255,0.65);
+  font-size: 13px;
+  line-height: 1.65;
+  max-width: 360px;
+  margin-bottom: 28px;
+}
+#rbtn {
+  background: none;
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 100px;
+  color: rgba(255,255,255,0.4);
+  font-size: 12px; letter-spacing: 0.1em;
+  font-family: inherit;
+  padding: 9px 26px;
+  cursor: pointer;
+}
+#rbtn:hover { border-color: rgba(255,255,255,0.5); color: rgba(255,255,255,0.8); }
+</style>
+</head>
+<body>
+
+<div id="cave">
+  <div id="header">
+    <h1>caveman</h1>
+    <p>what's going on?</p>
+  </div>
+</div>
+
+<div id="overlay">
+  <button id="back" onclick="goBack()">← back</button>
+  <div id="dots"></div>
+  <div id="otag"></div>
+  <div id="otitle"></div>
+  <div id="obody"></div>
+  <div id="choices"></div>
+</div>
+
+<div id="final">
+  <div id="ftitle"></div>
+  <div id="fbody"></div>
+  <div id="ftip"></div>
+  <button id="rbtn" onclick="restart()">start over</button>
+</div>
+
+<script>
+const feelings = [
+  { label: "anger",        size: 92 },
+  { label: "anxiety",      size: 84 },
+  { label: "sadness",      size: 88 },
+  { label: "loneliness",   size: 80 },
+  { label: "overthinking", size: 100 },
+  { label: "emptiness",    size: 76 },
+  { label: "stress",       size: 86 },
+  { label: "numbness",     size: 72 },
+  { label: "shame",        size: 78 },
+];
+
+const flows = {
+  anger: {
+    steps: [
+      { title: "where's it coming from?", body: "anger doesn't come from nowhere. something hit a nerve.", choices: ["someone let me down","i feel disrespected","things aren't going my way","i don't even know"] },
+      { "someone let me down": { title: "that trust thing hurts", body: "when someone you counted on drops the ball, it cuts deep. especially if you'd do it differently for them.", choices: ["i expected better from them","it keeps happening","i feel stupid for trusting them"] }, "i feel disrespected": { title: "your dignity matters", body: "feeling dismissed is real. anger is your brain defending your worth.", choices: ["they acted like i don't matter","nobody listens to me","i got talked over"] }, "things aren't going my way": { title: "friction everywhere", body: "sometimes life just resists. every little thing goes wrong and it stacks up fast.", choices: ["i'm exhausted from fighting for it","i keep trying and nothing changes","it's one thing after another"] }, "i don't even know": { title: "undirected anger is real", body: "sometimes the anger is just there. no clear target. that's often built-up stress looking for an exit.", choices: ["i've been stressed for weeks","i feel like i'm about to snap","everything annoys me lately"] } },
+      { final: true, title: "got it.", body: "your anger makes sense. it's telling you something matters — your trust, your respect, your limits.", tip: "name it out loud: 'i'm angry because ___'. that one move takes a lot of the heat out." }
+    ]
+  },
+  anxiety: {
+    steps: [
+      { title: "where's your head at?", body: "anxiety lives everywhere at once. let's narrow it down.", choices: ["worrying about the future","social stuff","something specific coming up","just a constant background hum"] },
+      { "worrying about the future": { title: "the what-ifs are loud", body: "your brain is running worst-case scenarios on loop. it thinks it's protecting you.", choices: ["i can't stop imagining things going wrong","i feel out of control","i'm scared of failing"] }, "social stuff": { title: "people pressure", body: "social anxiety is exhausting. always in your own head about how you're coming across.", choices: ["i overthink everything i say","i hate being judged","i isolate to avoid the feeling"] }, "something specific coming up": { title: "that one thing", body: "when there's a concrete thing looming, anxiety locks in on it. makes it feel bigger than it is.", choices: ["i can't stop thinking about it","i keep putting off preparing","my body is already reacting"] }, "just a constant background hum": { title: "baseline dread", body: "that low-level anxiety that never fully goes away. no obvious reason, just always there.", choices: ["i've felt it for months","i wake up already tense","i forget what calm feels like"] } },
+      { final: true, title: "anxiety noted.", body: "you're not broken. your nervous system is running hot. the world probably demands a lot from you right now.", tip: "4-7-8 breathing: in for 4, hold 7, out for 8. do it three times. it literally slows your heart rate down." }
+    ]
+  },
+  sadness: {
+    steps: [
+      { title: "what's weighing on you?", body: "sadness comes in different shapes. let's figure out yours.", choices: ["i lost something or someone","i feel like i'm falling behind","i don't feel connected to anyone","i just feel... low"] },
+      { "i lost something or someone": { title: "grief is heavy", body: "loss hits different for everyone. doesn't matter if others think it's a big deal. it is to you.", choices: ["someone i care about is gone","i lost a version of my life i wanted","a relationship ended"] }, "i feel like i'm falling behind": { title: "comparison hurts", body: "looking around and feeling like everyone else has it figured out. brutal feeling.", choices: ["my friends seem further ahead","i'm not where i thought i'd be","i feel like i wasted time"] }, "i don't feel connected to anyone": { title: "loneliness in a crowd", body: "you can be surrounded by people and still feel alone. nobody really getting you is isolating.", choices: ["i have people but feel distant","i don't have anyone close","i push people away"] }, "i just feel... low": { title: "heaviness without a reason", body: "sometimes sadness doesn't need a trigger. it just lands on you. that's valid too.", choices: ["it's been going on a while","i have no motivation","i feel flat"] } },
+      { final: true, title: "you felt it, you named it.", body: "sadness isn't weakness. it means you care about things. that's actually a decent quality.", tip: "let yourself feel it for 10 minutes. then do one small physical thing — walk outside, cold water on your face, cook something." }
+    ]
+  },
+  loneliness: {
+    steps: [
+      { title: "what kind of alone?", body: "loneliness wears a lot of different masks.", choices: ["i have no one to talk to","people are around but don't get me","i want connection but avoid it","i lost my people somewhere along the way"] },
+      { "i have no one to talk to": { title: "real isolation", body: "genuinely not having your person — someone to check in with — is hard. humans need that.", choices: ["i've been like this for a while","i used to have people","i moved or life changed"] }, "people are around but don't get me": { title: "invisible in the room", body: "surrounded but unseen. that kind of loneliness cuts deeper than being physically alone.", choices: ["i can't be myself around them","they don't ask about me","i always have to perform"] }, "i want connection but avoid it": { title: "the push-pull", body: "wanting closeness but pulling away from it. usually means getting hurt before taught you it's safer alone.", choices: ["i don't trust people easily","i sabotage things when they get close","being vulnerable scares me"] }, "i lost my people somewhere along the way": { title: "the drift", body: "friendships that faded. people who were central and then just... weren't.", choices: ["after school or a job change","after a breakup or falling out","we all just got busy"] } },
+      { final: true, title: "loneliness named.", body: "most people feel this and never say it. you just did.", tip: "reach out to one person this week. doesn't have to be deep. a meme, a check-in, a 'hey'. small actions chip away at isolation." }
+    ]
+  },
+  overthinking: {
+    steps: [
+      { title: "what's the loop about?", body: "the brain running on repeat — what's it stuck on?", choices: ["a decision i can't make","something i said or did","what someone thinks of me","everything, all at once"] },
+      { "a decision i can't make": { title: "paralysis at the fork", body: "too many variables. scared of picking wrong. so you pick nothing and the loop keeps running.", choices: ["both options seem bad","i'm scared of regret","it affects too many people"] }, "something i said or did": { title: "the replay machine", body: "that thing you said three days ago, three years ago. your brain just will not let it go.", choices: ["i think i hurt someone","i embarrassed myself","i should have handled it differently"] }, "what someone thinks of me": { title: "living in their head", body: "spending more time in someone else's imagined perspective than in your own life.", choices: ["after an awkward interaction","i care too much what they think","i'm waiting for them to pull away"] }, "everything, all at once": { title: "40 tabs open", body: "not one thing — everything. your brain switched to chaos mode and won't switch back.", choices: ["i can't focus on anything","i've been like this for days","i feel overwhelmed just existing"] } },
+      { final: true, title: "mind noted.", body: "overthinking is anxiety looking for certainty in an uncertain world. you can't think your way out of it.", tip: "set a 5-minute timer. write every looping thought down. once it's on paper, your brain stops trying to hold it. close the notebook." }
+    ]
+  },
+  emptiness: {
+    steps: [
+      { title: "what does the emptiness feel like?", body: "emptiness is one of the harder ones to name. let's try.", choices: ["nothing excites me anymore","i'm going through the motions","i don't know who i am right now","i just feel hollow"] },
+      { "nothing excites me anymore": { title: "the flatline", body: "things that used to hit don't anymore. music, food, people. all a bit grey.", choices: ["it came on gradually","it happened after something","i've kind of always felt this way"] }, "i'm going through the motions": { title: "autopilot mode", body: "showing up. doing the things. but not really being there for any of it.", choices: ["work feels pointless","my relationships feel surface-level","i can't remember the last time i felt present"] }, "i don't know who i am right now": { title: "identity drift", body: "a version of you that felt solid now feels unfamiliar. happens after big changes or long stress.", choices: ["a lot in my life shifted","i've been so focused on others i lost myself","i don't know what i actually want"] }, "i just feel hollow": { title: "the ache of nothing", body: "not sadness exactly. not anger. just... nothing. like a room with no furniture.", choices: ["it's been going on a while","i feel disconnected from my body","i'm not sure anything matters"] } },
+      { final: true, title: "emptiness acknowledged.", body: "emptiness often means your system is running low. not broken — depleted.", tip: "pick one thing that used to mean something and spend 15 minutes with it today. not to feel amazing — just to feel something." }
+    ]
+  },
+  stress: {
+    steps: [
+      { title: "what's pressing on you?", body: "stress is pressure without a clear release. where's it coming from?", choices: ["work or school","money stuff","relationships","i'm just stretched too thin"] },
+      { "work or school": { title: "the grind is grinding back", body: "too much, too fast, expectations piling up.", choices: ["i can't keep up","i don't feel good enough","i'm burnt out"] }, "money stuff": { title: "financial stress is real stress", body: "money worries sit in the background of everything. hard to relax when you're calculating.", choices: ["i'm behind on things","i feel trapped","i'm scared about the future"] }, "relationships": { title: "people can be exhausting", body: "stress from people you care about — or have to deal with — hits different.", choices: ["there's conflict i can't resolve","i'm carrying someone else's weight","i feel under-appreciated"] }, "i'm just stretched too thin": { title: "capacity exceeded", body: "too many things pulling you in too many directions. no room left to just exist.", choices: ["i can't say no to things","my schedule is killing me","i don't remember the last time i rested"] } },
+      { final: true, title: "stress located.", body: "stress means you care and you're pushing. but your body keeps score.", tip: "do one thing tonight purely for yourself. no productivity attached. half hour. the rest can wait." }
+    ]
+  },
+  numbness: {
+    steps: [
+      { title: "when did numb start?", body: "numbness is usually protection. something made full feeling unsafe.", choices: ["after something hard happened","it crept in slowly","i've always been a bit detached","when things got too overwhelming"] },
+      { "after something hard happened": { title: "shut down mode", body: "your system took on too much and the circuit breaker tripped. numbness is the safety protocol.", choices: ["loss or grief","a really stressful period","something i don't want to get into"] }, "it crept in slowly": { title: "slow fade", body: "day by day, a little less feeling. until you realised you weren't really reacting to things anymore.", choices: ["i've been numb for months","i stopped caring about things i used to","i lost my spark gradually"] }, "i've always been a bit detached": { title: "default setting", body: "some people run cooler emotionally. sometimes it's how they're wired. sometimes it's learned early.", choices: ["emotions were never safe to show growing up","i just process differently","i'm not sure it's a problem"] }, "when things got too overwhelming": { title: "emotional overload", body: "too much at once and the system just turned the volume down. it's a coping move.", choices: ["too many things hitting at once","i couldn't handle it all","i just went quiet inside"] } },
+      { final: true, title: "numbness understood.", body: "you're not broken. you're protected. the feeling is in there — just behind a wall you built for a reason.", tip: "don't force feeling. expose yourself to something that moves you — a song, a show, a memory. give the wall a small opening." }
+    ]
+  },
+  shame: {
+    steps: [
+      { title: "what's the shame about?", body: "shame says 'i am bad', not just 'i did something bad'. that difference matters.", choices: ["something i did","how i look or who i am","things i've been through","feeling less than everyone else"] },
+      { "something i did": { title: "guilt vs shame", body: "guilt is healthy — it says what you did was wrong. shame says you are wrong. there's a difference.", choices: ["i hurt someone","i failed at something","i made a choice i can't undo"] }, "how i look or who i am": { title: "self-image stuff", body: "shame about your body, personality, intelligence. someone somewhere taught you that you weren't enough.", choices: ["i was criticised growing up","i compare myself constantly","i don't feel like i fit anywhere"] }, "things i've been through": { title: "survivor shame", body: "feeling ashamed of things that happened to you — things you didn't choose or control. that's not yours to carry.", choices: ["something was done to me","my past feels like a burden","i'm scared of people knowing"] }, "feeling less than everyone else": { title: "not enough syndrome", body: "a constant baseline of feeling behind, lesser, not quite right. exhausting to live with.", choices: ["i never feel like i've done enough","i don't feel worthy of good things","i make myself small around others"] } },
+      { final: true, title: "shame faced.", body: "shame thrives in silence. you just shone a light on it. that takes something.", tip: "shame needs secrecy to survive. tell one trusted person one honest thing about yourself. it doesn't have to be the big thing. just something real." }
+    ]
+  }
+};
+
+let curFeeling = null, stepIdx = 0, path = [];
+
+function buildBubbles() {
+  const cave = document.getElementById('cave');
+  const W = window.innerWidth;
+  const H = window.innerHeight;
+  const placed = [];
+
+  feelings.forEach(f => {
+    const s = f.size;
+    let x = 0, y = 0, ok = false;
+    for (let t = 0; t < 200; t++) {
+      x = Math.random() * (W - s - 10) + 5;
+      y = Math.random() * (H - s - 80) + 75;
+      ok = placed.every(p => {
+        const dx = x + s/2 - p.cx, dy = y + s/2 - p.cy;
+        return Math.sqrt(dx*dx + dy*dy) > (s/2 + p.r + 12);
+      });
+      if (ok) break;
+    }
+    placed.push({ cx: x+s/2, cy: y+s/2, r: s/2 });
+
+    const d = document.createElement('div');
+    d.className = 'bubble';
+    d.style.cssText = `width:${s}px;height:${s}px;left:${x}px;top:${y}px;animation-duration:${(3.5+Math.random()*4).toFixed(1)}s;animation-delay:-${(Math.random()*4).toFixed(1)}s`;
+    d.innerHTML = `<span>${f.label}</span>`;
+    d.onclick = () => begin(f.label);
+    cave.appendChild(d);
+  });
+}
+
+function begin(feeling) {
+  curFeeling = feeling; stepIdx = 0; path = [];
+  document.getElementById('cave').style.display = 'none';
+  document.getElementById('final').classList.remove('on');
+  showStep();
+}
+
+function showStep() {
+  const steps = flows[curFeeling].steps;
+  let node;
+  if (stepIdx === 0) node = steps[0];
+  else if (stepIdx === 1) node = steps[1][path[0]];
+  else { showFinal(steps[2]); return; }
+
+  document.getElementById('otag').textContent = curFeeling;
+  document.getElementById('otitle').textContent = node.title;
+  document.getElementById('obody').textContent = node.body;
+  const ch = document.getElementById('choices');
+  ch.innerHTML = '';
+  node.choices.forEach(c => {
+    const b = document.createElement('button');
+    b.className = 'cbtn'; b.textContent = c;
+    b.onclick = () => { path.push(c); stepIdx++; showStep(); };
+    ch.appendChild(b);
+  });
+
+  const dots = document.getElementById('dots');
+  dots.innerHTML = '';
+  for (let i = 0; i < 3; i++) {
+    const d = document.createElement('div');
+    d.className = 'dot' + (i <= stepIdx ? ' on' : '');
+    dots.appendChild(d);
+  }
+  document.getElementById('overlay').classList.add('on');
+}
+
+function showFinal(node) {
+  document.getElementById('overlay').classList.remove('on');
+  document.getElementById('ftitle').textContent = node.title;
+  document.getElementById('fbody').textContent = node.body;
+  document.getElementById('ftip').textContent = '→  ' + node.tip;
+  document.getElementById('final').classList.add('on');
+}
+
+function goBack() {
+  if (stepIdx === 0) { restart(); return; }
+  path.pop(); stepIdx--;
+  showStep();
+}
+
+function restart() {
+  document.getElementById('overlay').classList.remove('on');
+  document.getElementById('final').classList.remove('on');
+  document.getElementById('cave').style.display = 'block';
+}
+
+buildBubbles();
+</script>
+</body>
+</html>
