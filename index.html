@@ -22,6 +22,7 @@ body { background: #000; overflow-x: hidden; }
   z-index: 5;
   pointer-events: none;
 }
+#tabs { pointer-events: all; }
 #header h1 {
   color: rgba(255,255,255,0.3);
   font-size: 12px;
@@ -158,16 +159,37 @@ body { background: #000; overflow-x: hidden; }
   cursor: pointer;
 }
 #rbtn:hover { border-color: rgba(255,255,255,0.45); color: rgba(255,255,255,0.75); }
+/* Tabs */
+#tabs { display: flex; justify-content: center; gap: 24px; margin-top: 14px; }
+.tab-btn { background: none; border: none; border-bottom: 1px solid transparent; color: rgba(255,255,255,0.2); font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; cursor: pointer; font-family: inherit; padding: 2px 0 5px; transition: color 0.2s, border-color 0.2s; }
+.tab-btn.active { color: rgba(255,255,255,0.7); border-bottom-color: rgba(255,255,255,0.35); }
+.tab-btn:hover:not(.active) { color: rgba(255,255,255,0.45); }
+/* Timer cave */
+#timer-cave { background: #000; width: 100%; min-height: 200vh; position: relative; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; display: none; }
+/* Timer overlay */
+#timer-overlay { display: none; position: fixed; inset: 0; background: #000; z-index: 25; flex-direction: column; align-items: center; justify-content: center; }
+#timer-overlay.on { display: flex; }
+#timer-back { position: absolute; top: 18px; left: 18px; background: none; border: none; color: rgba(255,255,255,0.3); font-size: 13px; letter-spacing: 0.08em; cursor: pointer; font-family: inherit; }
+#timer-back:hover { color: rgba(255,255,255,0.75); }
+#timer-tag { color: rgba(255,255,255,0.18); font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase; margin-bottom: 32px; font-family: inherit; }
+#timer-display { color: rgba(255,255,255,0.88); font-size: 78px; font-weight: 200; letter-spacing: 0.04em; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; margin-bottom: 16px; line-height: 1; }
+#timer-status { color: rgba(255,255,255,0.22); font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; font-family: inherit; margin-bottom: 44px; }
+#timer-again { background: none; border: 1px solid rgba(255,255,255,0.15); border-radius: 100px; color: rgba(255,255,255,0.3); font-size: 12px; letter-spacing: 0.1em; font-family: inherit; padding: 9px 26px; cursor: pointer; display: none; }
+#timer-again:hover { border-color: rgba(255,255,255,0.4); color: rgba(255,255,255,0.7); }
 </style>
 </head>
 <body>
 
-<div id="cave">
-  <div id="header">
-    <h1>caveman</h1>
-    <p>what's going on?</p>
+<div id="header">
+  <h1>caveman</h1>
+  <p id="header-sub">what's going on?</p>
+  <div id="tabs">
+    <button class="tab-btn active" onclick="switchTab('feel')">feel</button>
+    <button class="tab-btn" onclick="switchTab('reset')">reset</button>
   </div>
 </div>
+<div id="cave"></div>
+<div id="timer-cave"></div>
 <div id="scroll-hint">scroll for more ↓</div>
 
 <div id="overlay">
@@ -184,6 +206,14 @@ body { background: #000; overflow-x: hidden; }
   <div id="fbody"></div>
   <div id="ftip"></div>
   <button id="rbtn" onclick="restart()">start over</button>
+</div>
+
+<div id="timer-overlay">
+  <button id="timer-back" onclick="cancelTimer()">← stop</button>
+  <div id="timer-tag">dopamine detox</div>
+  <div id="timer-display">00:00</div>
+  <div id="timer-status">resetting...</div>
+  <button id="timer-again" onclick="startLastTimer()">do it again</button>
 </div>
 
 <script src="flows.js"></script>
@@ -313,7 +343,111 @@ function restart() {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
+// ── Timer tab ──────────────────────────────────────────────
+const timerOptions = [
+  { label: '2 min',  secs: 120,  size: 80 },
+  { label: '5 min',  secs: 300,  size: 92 },
+  { label: '10 min', secs: 600,  size: 104 },
+  { label: '15 min', secs: 900,  size: 112 },
+  { label: '20 min', secs: 1200, size: 108 },
+  { label: '30 min', secs: 1800, size: 118 },
+  { label: '45 min', secs: 2700, size: 106 },
+  { label: '1 hr',   secs: 3600, size: 98 },
+  { label: '2 hr',   secs: 7200, size: 88 },
+];
+
+function buildTimerBubbles() {
+  const cave = document.getElementById('timer-cave');
+  const W = window.innerWidth;
+  const H = window.innerHeight;
+  const caveH = Math.max(H * 2, timerOptions.length * 130 + 120);
+  cave.style.minHeight = caveH + 'px';
+  const placed = [];
+  timerOptions.forEach(t => {
+    const s = t.size;
+    let x = 0, y = 0, ok = false;
+    for (let tr = 0; tr < 800; tr++) {
+      x = Math.random() * (W - s - 14) + 7;
+      y = Math.random() * (caveH - s - 100) + 100;
+      ok = placed.every(p => {
+        const dx = x + s/2 - p.cx, dy = y + s/2 - p.cy;
+        return Math.sqrt(dx*dx+dy*dy) > (s/2 + p.r + 22);
+      });
+      if (ok) break;
+    }
+    placed.push({ cx: x+s/2, cy: y+s/2, r: s/2 });
+    const d = document.createElement('div');
+    d.className = 'bubble';
+    d.style.cssText = `width:${s}px;height:${s}px;left:${x}px;top:${y}px;animation-duration:${(3.5+Math.random()*4).toFixed(1)}s;animation-delay:-${(Math.random()*5).toFixed(1)}s`;
+    d.innerHTML = `<span>${t.label}</span>`;
+    d.onclick = () => startTimer(t.secs);
+    cave.appendChild(d);
+  });
+}
+
+let timerInterval = null, timerSecondsLeft = 0, lastTimerSecs = 0;
+
+function startTimer(secs) {
+  if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+  timerSecondsLeft = secs;
+  lastTimerSecs = secs;
+  document.getElementById('timer-cave').style.display = 'none';
+  document.getElementById('timer-again').style.display = 'none';
+  document.getElementById('timer-back').textContent = '← stop';
+  document.getElementById('timer-status').textContent = 'resetting...';
+  document.getElementById('timer-display').textContent = formatTime(secs);
+  document.getElementById('timer-overlay').classList.add('on');
+  timerInterval = setInterval(() => {
+    timerSecondsLeft--;
+    if (timerSecondsLeft <= 0) {
+      clearInterval(timerInterval); timerInterval = null;
+      timerDone();
+    } else {
+      document.getElementById('timer-display').textContent = formatTime(timerSecondsLeft);
+    }
+  }, 1000);
+}
+
+function formatTime(secs) {
+  const m = Math.floor(secs / 60), s = secs % 60;
+  return String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+}
+
+function timerDone() {
+  document.getElementById('timer-display').textContent = 'done.';
+  document.getElementById('timer-status').textContent = 'you made it.';
+  document.getElementById('timer-back').textContent = '← back';
+  document.getElementById('timer-again').style.display = 'block';
+  if (navigator.vibrate) navigator.vibrate([200, 100, 200, 100, 400]);
+}
+
+function cancelTimer() {
+  if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+  document.getElementById('timer-overlay').classList.remove('on');
+  document.getElementById('timer-cave').style.display = 'block';
+}
+
+function startLastTimer() { startTimer(lastTimerSecs); }
+
+function switchTab(tab) {
+  const cave = document.getElementById('cave');
+  const tcave = document.getElementById('timer-cave');
+  const sub = document.getElementById('header-sub');
+  document.querySelectorAll('.tab-btn').forEach((b, i) => {
+    b.classList.toggle('active', (tab === 'feel') ? i === 0 : i === 1);
+  });
+  if (tab === 'feel') {
+    cave.style.display = 'block'; tcave.style.display = 'none';
+    sub.textContent = "what's going on?";
+  } else {
+    cave.style.display = 'none'; tcave.style.display = 'block';
+    sub.textContent = 'clear your head.';
+  }
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
 buildBubbles();
+buildTimerBubbles();
 </script>
 </body>
 </html>
