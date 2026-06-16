@@ -176,6 +176,25 @@ body { background: #000; overflow-x: hidden; }
 #timer-status { color: rgba(255,255,255,0.22); font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; font-family: inherit; margin-bottom: 44px; }
 #timer-again { background: none; border: 1px solid rgba(255,255,255,0.15); border-radius: 100px; color: rgba(255,255,255,0.3); font-size: 12px; letter-spacing: 0.1em; font-family: inherit; padding: 9px 26px; cursor: pointer; display: none; }
 #timer-again:hover { border-color: rgba(255,255,255,0.4); color: rgba(255,255,255,0.7); }
+/* Bro cave */
+#bro-cave {
+  display: none;
+  position: fixed;
+  left: 0; right: 0; bottom: 0; top: 108px;
+  background: #000;
+  z-index: 2;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 36px 40px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+#bro-cave.on { display: flex; }
+#bro-label { color: rgba(255,255,255,0.15); font-size: 10px; letter-spacing: 0.28em; text-transform: uppercase; margin-bottom: 28px; }
+#bro-quote { color: rgba(255,255,255,0.88); font-size: 20px; font-weight: 300; line-height: 1.8; text-align: center; max-width: 340px; margin-bottom: 48px; transition: opacity 0.22s ease; }
+#bro-quote.fade { opacity: 0; }
+#bro-next { background: none; border: 1px solid rgba(255,255,255,0.13); border-radius: 100px; color: rgba(255,255,255,0.28); font-size: 12px; letter-spacing: 0.12em; font-family: inherit; padding: 9px 26px; cursor: pointer; transition: border-color 0.2s, color 0.2s; }
+#bro-next:hover { border-color: rgba(255,255,255,0.4); color: rgba(255,255,255,0.7); }
 </style>
 </head>
 <body>
@@ -185,11 +204,17 @@ body { background: #000; overflow-x: hidden; }
   <p id="header-sub">what's going on?</p>
   <div id="tabs">
     <button class="tab-btn active" onclick="switchTab('feel')">feel</button>
+    <button class="tab-btn" onclick="switchTab('bro')">bro</button>
     <button class="tab-btn" onclick="switchTab('reset')">reset</button>
   </div>
 </div>
 <div id="cave"></div>
 <div id="timer-cave"></div>
+<div id="bro-cave">
+  <div id="bro-label">from your older bro</div>
+  <p id="bro-quote"></p>
+  <button id="bro-next" onclick="nextQuote()">another one →</button>
+</div>
 <div id="scroll-hint">scroll for more ↓</div>
 
 <div id="overlay">
@@ -216,6 +241,7 @@ body { background: #000; overflow-x: hidden; }
   <button id="timer-again" onclick="startLastTimer()">do it again</button>
 </div>
 
+<script src="quotes.js"></script>
 <script src="flows.js"></script>
 <script>
 const feelings = [
@@ -429,19 +455,40 @@ function cancelTimer() {
 
 function startLastTimer() { startTimer(lastTimerSecs); }
 
+function showQuote() {
+  const q = document.getElementById('bro-quote');
+  q.classList.add('fade');
+  setTimeout(() => {
+    q.textContent = pick(quotes);
+    q.classList.remove('fade');
+  }, 220);
+}
+
+function nextQuote() { showQuote(); }
+
 function switchTab(tab) {
-  const cave = document.getElementById('cave');
+  const cave  = document.getElementById('cave');
   const tcave = document.getElementById('timer-cave');
-  const sub = document.getElementById('header-sub');
+  const bcave = document.getElementById('bro-cave');
+  const sub   = document.getElementById('header-sub');
+  const hint  = document.getElementById('scroll-hint');
   document.querySelectorAll('.tab-btn').forEach((b, i) => {
-    b.classList.toggle('active', (tab === 'feel') ? i === 0 : i === 1);
+    b.classList.toggle('active',
+      (tab === 'feel' && i === 0) ||
+      (tab === 'bro'  && i === 1) ||
+      (tab === 'reset' && i === 2)
+    );
   });
-  if (tab === 'feel') {
-    cave.style.display = 'block'; tcave.style.display = 'none';
-    sub.textContent = "what's going on?";
+  cave.style.display  = tab === 'feel'  ? 'block' : 'none';
+  tcave.style.display = tab === 'reset' ? 'block' : 'none';
+  hint.style.display  = tab === 'feel'  ? ''      : 'none';
+  if (tab === 'bro') {
+    bcave.classList.add('on');
+    showQuote();
+    sub.textContent = 'real talk.';
   } else {
-    cave.style.display = 'none'; tcave.style.display = 'block';
-    sub.textContent = 'clear your head.';
+    bcave.classList.remove('on');
+    sub.textContent = tab === 'feel' ? "what's going on?" : 'clear your head.';
   }
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
