@@ -299,7 +299,7 @@ function buildBubbles() {
     d.className = 'bubble';
     d.style.cssText = `width:${s}px;height:${s}px;left:${x}px;top:${y}px;animation-duration:${(3.5+Math.random()*4).toFixed(1)}s;animation-delay:-${(Math.random()*5).toFixed(1)}s`;
     d.innerHTML = `<span>${f.label}</span>`;
-    d.onclick = () => begin(f.label);
+    d.onclick = () => { navigator.vibrate?.(8); begin(f.label); };
     cave.appendChild(d);
   });
 
@@ -342,7 +342,7 @@ function showStep() {
     const b = document.createElement('button');
     b.className = 'cbtn';
     b.textContent = c;
-    b.onclick = () => { path.push(i); stepIdx++; showStep(); };
+    b.onclick = () => { navigator.vibrate?.(8); path.push(i); stepIdx++; showStep(); };
     ch.appendChild(b);
   });
 
