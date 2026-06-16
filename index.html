@@ -160,24 +160,12 @@ body { background: #000; overflow-x: hidden; }
 }
 #rbtn:hover { border-color: rgba(255,255,255,0.45); color: rgba(255,255,255,0.75); }
 /* Tabs */
-#tabs { display: flex; justify-content: center; gap: 18px; margin-top: 14px; }
+#tabs { display: flex; justify-content: center; gap: 24px; margin-top: 14px; }
 .tab-btn { background: none; border: none; border-bottom: 1px solid transparent; color: rgba(255,255,255,0.2); font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; cursor: pointer; font-family: inherit; padding: 2px 0 5px; transition: color 0.2s, border-color 0.2s; }
 .tab-btn.active { color: rgba(255,255,255,0.7); border-bottom-color: rgba(255,255,255,0.35); }
 .tab-btn:hover:not(.active) { color: rgba(255,255,255,0.45); }
 /* Timer cave */
-#timer-cave { background: #000; width: 100%; position: fixed; left:0; right:0; bottom:0; top:108px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; display: none; z-index: 1; }
-#timer-bubble-area { position: absolute; top:0; left:0; right:0; bottom:148px; overflow:hidden; }
-#breathe-section { position: absolute; bottom:0; left:0; right:0; height:148px; display:flex; flex-direction:column; align-items:center; justify-content:center; border-top:1px solid rgba(255,255,255,0.06); }
-#breathe-ring { width:52px; height:52px; border-radius:50%; border:1px solid rgba(255,255,255,0.2); margin-bottom:13px; }
-#breathe-label { color:rgba(255,255,255,0.28); font-size:10px; letter-spacing:0.22em; text-transform:uppercase; margin-bottom:6px; }
-#breathe-count { color:rgba(255,255,255,0.14); font-size:22px; font-weight:200; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; }
-/* Vent cave */
-#vent-cave { display:none; position:fixed; left:0; right:0; bottom:0; top:108px; background:#000; z-index:2; flex-direction:column; align-items:center; justify-content:center; padding:0 36px 48px; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; }
-#vent-cave.on { display:flex; }
-#vent-area { background:none; border:none; outline:none; color:rgba(255,255,255,0.88); font-size:18px; font-weight:300; font-family:inherit; line-height:1.75; width:100%; max-width:360px; resize:none; caret-color:rgba(255,255,255,0.45); min-height:180px; margin-bottom:36px; }
-#vent-area::placeholder { color:rgba(255,255,255,0.1); }
-#burn-btn { background:none; border:1px solid rgba(255,255,255,0.13); border-radius:100px; color:rgba(255,255,255,0.28); font-size:12px; letter-spacing:0.12em; font-family:inherit; padding:9px 26px; cursor:pointer; transition:border-color 0.2s,color 0.2s; }
-#burn-btn:hover { border-color:rgba(255,60,0,0.5); color:rgba(255,80,0,0.7); }
+#timer-cave { background: #000; width: 100%; min-height: 200vh; position: relative; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; display: none; }
 /* Timer overlay */
 #timer-overlay { display: none; position: fixed; inset: 0; background: #000; z-index: 25; flex-direction: column; align-items: center; justify-content: center; }
 #timer-overlay.on { display: flex; }
@@ -213,24 +201,12 @@ body { background: #000; overflow-x: hidden; }
   <p id="header-sub">what's going on?</p>
   <div id="tabs">
     <button class="tab-btn active" onclick="switchTab('feel')">feel</button>
-    <button class="tab-btn" onclick="switchTab('vent')">vent</button>
     <button class="tab-btn" onclick="switchTab('bro')">bro</button>
     <button class="tab-btn" onclick="switchTab('reset')">reset</button>
   </div>
 </div>
 <div id="cave"></div>
-<div id="timer-cave">
-  <div id="timer-bubble-area"></div>
-  <div id="breathe-section">
-    <div id="breathe-ring"></div>
-    <div id="breathe-label">breathe in</div>
-    <div id="breathe-count">4</div>
-  </div>
-</div>
-<div id="vent-cave">
-  <textarea id="vent-area" placeholder="say it." rows="6"></textarea>
-  <button id="burn-btn" onclick="burnIt()">burn it</button>
-</div>
+<div id="timer-cave"></div>
 <div id="bro-cave">
   <div id="bro-label">from your older bro</div>
   <p id="bro-quote"></p>
@@ -403,16 +379,18 @@ const timerOptions = [
 ];
 
 function buildTimerBubbles() {
-  const area = document.getElementById('timer-bubble-area');
+  const cave = document.getElementById('timer-cave');
   const W = window.innerWidth;
-  const caveH = Math.max(window.innerHeight - 108 - 148, timerOptions.length * 70 + 60);
+  const H = window.innerHeight;
+  const caveH = Math.max(H * 1.2, timerOptions.length * 88 + 100);
+  cave.style.minHeight = caveH + 'px';
   const placed = [];
   timerOptions.forEach(t => {
     const s = t.size;
     let x = 0, y = 0, ok = false;
     for (let tr = 0; tr < 800; tr++) {
       x = Math.random() * (W - s - 14) + 7;
-      y = Math.random() * (caveH - s - 60) + 30;
+      y = Math.random() * (caveH - s - 100) + 100;
       ok = placed.every(p => {
         const dx = x + s/2 - p.cx, dy = y + s/2 - p.cy;
         return Math.sqrt(dx*dx+dy*dy) > (s/2 + p.r + 9);
@@ -425,7 +403,7 @@ function buildTimerBubbles() {
     d.style.cssText = `width:${s}px;height:${s}px;left:${x}px;top:${y}px;animation-duration:${(3.5+Math.random()*4).toFixed(1)}s;animation-delay:-${(Math.random()*5).toFixed(1)}s`;
     d.innerHTML = `<span>${t.label}</span>`;
     d.onclick = () => startTimer(t.secs);
-    area.appendChild(d);
+    cave.appendChild(d);
   });
 }
 
@@ -433,9 +411,9 @@ let timerInterval = null, timerSecondsLeft = 0, lastTimerSecs = 0;
 
 function startTimer(secs) {
   if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
-  stopBreathing();
   timerSecondsLeft = secs;
   lastTimerSecs = secs;
+  document.getElementById('timer-cave').style.display = 'none';
   document.getElementById('timer-again').style.display = 'none';
   document.getElementById('timer-back').textContent = '← stop';
   document.getElementById('timer-status').textContent = 'resetting...';
@@ -468,7 +446,7 @@ function timerDone() {
 function cancelTimer() {
   if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
   document.getElementById('timer-overlay').classList.remove('on');
-  startBreathing();
+  document.getElementById('timer-cave').style.display = 'block';
 }
 
 function startLastTimer() { startTimer(lastTimerSecs); }
@@ -477,73 +455,14 @@ function showQuote() {
   document.getElementById('bro-quote').textContent = pick(quotes);
 }
 
-// ── Vent & Burn ────────────────────────────────────────────
-function burnIt() {
-  const ta = document.getElementById('vent-area');
-  if (!ta.value.trim()) return;
-  ta.style.transition = 'color 0.25s ease';
-  ta.style.color = 'rgba(255,90,0,0.9)';
-  setTimeout(() => {
-    ta.style.transition = 'color 0.1s ease, opacity 0.35s ease';
-    ta.style.color = 'rgba(255,30,0,0.2)';
-    ta.style.opacity = '0';
-  }, 250);
-  setTimeout(() => {
-    ta.value = '';
-    ta.style.transition = 'none';
-    ta.style.color = 'rgba(255,255,255,0.88)';
-    ta.style.opacity = '1';
-  }, 600);
-}
-
-// ── Box Breathing ──────────────────────────────────────────
-const bPhases = [
-  { label: 'breathe in',  scale: 1.9, tween: 'transform 3.8s cubic-bezier(0.4,0,0.2,1)' },
-  { label: 'hold',        scale: 1.9, tween: 'none' },
-  { label: 'breathe out', scale: 1.0, tween: 'transform 3.8s cubic-bezier(0.4,0,0.2,1)' },
-  { label: 'hold',        scale: 1.0, tween: 'none' },
-];
-let bPhaseIdx = 0, bCountdown = 4, bTick = null;
-
-function applyBreathePhase() {
-  const p = bPhases[bPhaseIdx];
-  const ring  = document.getElementById('breathe-ring');
-  const label = document.getElementById('breathe-label');
-  const count = document.getElementById('breathe-count');
-  ring.style.transition = p.tween;
-  ring.style.transform  = `scale(${p.scale})`;
-  label.textContent = p.label;
-  count.textContent = bCountdown;
-}
-
-function startBreathing() {
-  stopBreathing();
-  bPhaseIdx = 0; bCountdown = 4;
-  applyBreathePhase();
-  bTick = setInterval(() => {
-    bCountdown--;
-    document.getElementById('breathe-count').textContent = bCountdown;
-    if (bCountdown <= 0) {
-      bPhaseIdx = (bPhaseIdx + 1) % 4;
-      bCountdown = 4;
-      applyBreathePhase();
-    }
-  }, 1000);
-}
-
-function stopBreathing() {
-  if (bTick) { clearInterval(bTick); bTick = null; }
-}
-
 // ── Tab switching ──────────────────────────────────────────
 function switchTab(tab) {
   const cave  = document.getElementById('cave');
   const tcave = document.getElementById('timer-cave');
   const bcave = document.getElementById('bro-cave');
-  const vcave = document.getElementById('vent-cave');
   const sub   = document.getElementById('header-sub');
   const hint  = document.getElementById('scroll-hint');
-  const order = ['feel', 'vent', 'bro', 'reset'];
+  const order = ['feel', 'bro', 'reset'];
   document.querySelectorAll('.tab-btn').forEach((b, i) => {
     b.classList.toggle('active', order[i] === tab);
   });
@@ -551,13 +470,9 @@ function switchTab(tab) {
   tcave.style.display = tab === 'reset' ? 'block' : 'none';
   hint.style.display  = tab === 'feel'  ? ''      : 'none';
   bcave.classList.toggle('on', tab === 'bro');
-  vcave.classList.toggle('on', tab === 'vent');
-  const subs = { feel: "what's going on?", vent: 'get it out.', bro: 'real talk.', reset: 'clear your head.' };
+  const subs = { feel: "what's going on?", bro: 'real talk.', reset: 'clear your head.' };
   sub.textContent = subs[tab];
-  if (tab === 'bro')   showQuote();
-  if (tab === 'reset') startBreathing();
-  else stopBreathing();
-  if (tab === 'vent') setTimeout(() => document.getElementById('vent-area').focus(), 50);
+  if (tab === 'bro') showQuote();
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
