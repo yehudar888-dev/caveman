@@ -191,10 +191,7 @@ body { background: #000; overflow-x: hidden; }
 }
 #bro-cave.on { display: flex; }
 #bro-label { color: rgba(255,255,255,0.15); font-size: 10px; letter-spacing: 0.28em; text-transform: uppercase; margin-bottom: 28px; }
-#bro-quote { color: rgba(255,255,255,0.88); font-size: 20px; font-weight: 300; line-height: 1.8; text-align: center; max-width: 340px; margin-bottom: 48px; transition: opacity 0.22s ease; }
-#bro-quote.fade { opacity: 0; }
-#bro-next { background: none; border: 1px solid rgba(255,255,255,0.13); border-radius: 100px; color: rgba(255,255,255,0.28); font-size: 12px; letter-spacing: 0.12em; font-family: inherit; padding: 9px 26px; cursor: pointer; transition: border-color 0.2s, color 0.2s; }
-#bro-next:hover { border-color: rgba(255,255,255,0.4); color: rgba(255,255,255,0.7); }
+#bro-quote { color: rgba(255,255,255,0.88); font-size: 20px; font-weight: 300; line-height: 1.8; text-align: center; max-width: 340px; }
 </style>
 </head>
 <body>
@@ -213,7 +210,6 @@ body { background: #000; overflow-x: hidden; }
 <div id="bro-cave">
   <div id="bro-label">from your older bro</div>
   <p id="bro-quote"></p>
-  <button id="bro-next" onclick="nextQuote()">another one →</button>
 </div>
 <div id="scroll-hint">scroll for more ↓</div>
 
@@ -456,15 +452,8 @@ function cancelTimer() {
 function startLastTimer() { startTimer(lastTimerSecs); }
 
 function showQuote() {
-  const q = document.getElementById('bro-quote');
-  q.classList.add('fade');
-  setTimeout(() => {
-    q.textContent = pick(quotes);
-    q.classList.remove('fade');
-  }, 220);
+  document.getElementById('bro-quote').textContent = pick(quotes);
 }
-
-function nextQuote() { showQuote(); }
 
 function switchTab(tab) {
   const cave  = document.getElementById('cave');
