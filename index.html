@@ -247,7 +247,7 @@ function buildBubbles() {
   const cave = document.getElementById('cave');
   const W = window.innerWidth;
   const H = window.innerHeight;
-  const caveH = Math.max(H * 2, feelings.length * 130 + 120);
+  const caveH = Math.max(H * 1.5, feelings.length * 88 + 100);
   cave.style.minHeight = caveH + 'px';
   const placed = [];
 
@@ -259,7 +259,7 @@ function buildBubbles() {
       y = Math.random() * (caveH - s - 100) + 100;
       ok = placed.every(p => {
         const dx = x + s/2 - p.cx, dy = y + s/2 - p.cy;
-        return Math.sqrt(dx*dx + dy*dy) > (s/2 + p.r + 22);
+        return Math.sqrt(dx*dx + dy*dy) > (s/2 + p.r + 9);
       });
       if (ok) break;
     }
@@ -360,7 +360,7 @@ function buildTimerBubbles() {
   const cave = document.getElementById('timer-cave');
   const W = window.innerWidth;
   const H = window.innerHeight;
-  const caveH = Math.max(H * 2, timerOptions.length * 130 + 120);
+  const caveH = Math.max(H * 1.2, timerOptions.length * 88 + 100);
   cave.style.minHeight = caveH + 'px';
   const placed = [];
   timerOptions.forEach(t => {
@@ -371,7 +371,7 @@ function buildTimerBubbles() {
       y = Math.random() * (caveH - s - 100) + 100;
       ok = placed.every(p => {
         const dx = x + s/2 - p.cx, dy = y + s/2 - p.cy;
-        return Math.sqrt(dx*dx+dy*dy) > (s/2 + p.r + 22);
+        return Math.sqrt(dx*dx+dy*dy) > (s/2 + p.r + 9);
       });
       if (ok) break;
     }
